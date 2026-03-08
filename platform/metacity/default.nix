@@ -25,7 +25,17 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
 
-  nativeBuildInputs = [ intltool pkg-config glib gtk2 libcanberra-gtk2 libXdamage GConf zenity gnome-doc-utils ];
+  nativeBuildInputs = [
+    intltool
+    pkg-config
+    glib
+    gtk2
+    libcanberra-gtk2
+    libXdamage
+    GConf
+    zenity
+    gnome-doc-utils
+  ];
 
   patches = [
   ];
