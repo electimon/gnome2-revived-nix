@@ -20,5 +20,13 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-leJ1dA9H4rXcYCyjvyBxH7m5goScPpBrtnGbZHWDPSc=";
   };
 
-  propagatedBuildInputs = [ which intltool pkg-config glib gtk2 ncurses python3 ]; # autogen.sh which is using vte tends to require which
+  propagatedBuildInputs = [
+    which
+    intltool
+    pkg-config
+    glib
+    gtk2
+    ncurses
+    python3
+  ]; # autogen.sh which is using vte tends to require which
 }

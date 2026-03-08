@@ -10,15 +10,16 @@
   polkit,
   python312,
   intltool,
+  gtk2,
 }:
 
 stdenv.mkDerivation rec {
   pname = "gconf";
-  version = "3.2.6";
+  version = "2.32.0";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/GConf/${lib.versions.majorMinor version}/GConf-${version}.tar.xz";
-    sha256 = "0k3q9nh53yhc9qxf1zaicz4sk8p3kzq4ndjdsgpaa2db0ccbj4hr";
+    url = "mirror://gnome/sources/GConf/${lib.versions.majorMinor version}/GConf-${version}.tar.gz";
+    sha256 = "sha256-IhJjfmzN9e+SkxVAjlEUVbzJwV+TL125QlS5llfdNB4";
   };
 
   outputs = [
@@ -32,6 +33,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     ORBit2
     libxml2
+    gtk2
   ]
   # polkit requires pam, which requires shadow.h, which is not available on
   # darwin
@@ -55,6 +57,12 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     2to3 --write --nobackup gsettings/gsettings-schema-convert
+    substituteInPlace configure \
+      --replace 'pkg-config --variable giomoduledir gio-2.0' 'echo $out/lib/gio/modules'
+  '';
+
+  preInstall = ''
+    mkdir -p $out/lib/gio/modules
   '';
 
   meta = {
