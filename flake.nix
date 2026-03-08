@@ -37,6 +37,7 @@
           inherit libXmu;
         };
         zenity = callPackage ./platform/zenity { };
+        vte = callPackage ./platform/vte { };
         default = pkgs.buildEnv rec {
           name = "gnome2-bootstrap";
           paths = [
@@ -52,6 +53,7 @@
             gtk2
             metacity
             zenity
+            vte
           ];
         };
       };
