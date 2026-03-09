@@ -178,19 +178,24 @@ services.xserver.desktopManager.gnome2.enable = true;
               services.xserver.enable = true;
               services.xserver.displayManager.startx.enable = true;
 
-              environment.sessionVariables = {
-                GCONF_CONFIG_SOURCE = "xml:merged:/etc/gconf/gconf.xml.defaults";
-                GCONF_SCHEMA_INSTALL_SOURCE="xml:merged:/etc/gconf/gconf.xml.defaults";
-              };
+environment.etc."gconf/2/path".text = ''
+xml:readonly:/etc/gconf/gconf.xml.mandatory
+include /etc/gconf/2/local-mandatory.path
+include "$(USERCONFDIR)/gconf/path"
+include "$(HOME)/.gconf.path"
+xml:readwrite:/var/lib/gconf
+xml:readonly:/etc/gconf/gconf.xml.system
+include /etc/gconf/2/local-defaults.path
+xml:readonly:/etc/gconf/gconf.xml.defaults
+'';
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
-              environment.etc."gconf/2".source = "${self.packages.x86_64-linux.GConf}/etc/gconf/2";
               environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
 
               system.activationScripts.gconfSchemas.text = ''
                 export GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
-                export GCONF_SCHEMA_INSTALL_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
+#                export GCONF_SCHEMA_INSTALL_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
                 mkdir -p /etc/gconf/gconf.xml.defaults
 
                 for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
