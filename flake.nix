@@ -15,7 +15,7 @@
       libX11 = pkgs.xorg.libX11;
       libXmu = pkgs.xorg.libXmu;
       ORBit2 = gnome2.ORBit2;
-      #      GConf = gnome2.GConf;
+      GConf = gnome2.GConf;
       libIDL = gnome2.libIDL;
       libart_lgpl = gnome2.libart_lgpl;
       libglade = gnome2.libglade;
@@ -154,6 +154,7 @@
         system = system;
 
         modules = [
+          ./modules/session.nix
           /etc/nixos/configuration.nix
 
           (
@@ -163,6 +164,8 @@
                 "nix-command"
                 "flakes"
               ];
+
+services.xserver.desktopManager.gnome2.enable = true;
 
               environment.systemPackages = [
                 self.packages.${system}.default
