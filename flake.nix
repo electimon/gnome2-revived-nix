@@ -146,6 +146,7 @@
             gtk2.out
             xdg-user-dirs
             nautilus
+            pkgs.hicolor-icon-theme
           ];
         };
       };
@@ -175,7 +176,9 @@
                 GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf,xml:readonly:/etc/gconf/gconf.xml.defaults";
               };
               environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
-
+              systemd.tmpfiles.rules = [
+                "d /var/lib/gconf 0755 root root -"
+              ];
               system.activationScripts.gconfSchemas.text = ''
                 export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
 
