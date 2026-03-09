@@ -16,7 +16,7 @@ index d3a6dd4..abb641b 100644
  #include "GConfX.h"
  
 +#undef GCONF_CONFDIR
-+#define GCONF_CONFDIR "/etc/gconf"
++#define GCONF_CONFDIR "/etc/gconf/2"
 +
  #ifdef G_OS_WIN32
  
