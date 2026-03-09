@@ -14,6 +14,15 @@
       gnome2 = pkgs.gnome2;
       libX11 = pkgs.xorg.libX11;
       libXmu = pkgs.xorg.libXmu;
+      ORBit2 = gnome2.ORBit2;
+      #      GConf = gnome2.GConf;
+      libIDL = gnome2.libIDL;
+      libart_lgpl = gnome2.libart_lgpl;
+      libglade = gnome2.libglade;
+      libgnomecanvas = gnome2.libgnomecanvas;
+      gtkglext = gnome2.gtkglext;
+      gnome_mime_data = gnome2.gnome_mime_data;
+      gnome-common = gnome2.gnome-common;
       isOld = pkgs.lib.versionOlder pkgs.lib.version "25.11";
       libsoup = if pkgs.lib.hasAttr "libsoup_2_4" pkgs then pkgs.libsoup_2_4 else pkgs.libsoup;
       gtk2 = pkgs.gtk2.overrideAttrs (old: {
@@ -26,12 +35,12 @@
     in
     {
       packages.${system} = rec {
-        ORBit2 = callPackage ./platform/ORBit2 { inherit libIDL; };
+        #        ORBit2 = callPackage ./platform/ORBit2 { inherit libIDL; };
         metacity = callPackage ./platform/metacity {
           inherit GConf;
           inherit zenity;
         };
-        libIDL = callPackage ./platform/libIDL { };
+        #        libIDL = callPackage ./platform/libIDL { };
         libgweather = callPackage ./platform/libgweather {
           inherit GConf;
           inherit libsoup;
@@ -40,8 +49,8 @@
           inherit GConf;
           inherit scrollkeeper;
         };
-        libart_lgpl = callPackage ./platform/libart_lgpl { };
-        libglade = callPackage ./platform/libglade { };
+        #        libart_lgpl = callPackage ./platform/libart_lgpl { };
+        #        libglade = callPackage ./platform/libglade { };
         libgnomekbd = callPackage ./platform/libgnomekbd {
           inherit gnome-common;
           inherit GConf;
@@ -54,11 +63,11 @@
           inherit scrollkeeper;
         };
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
-        libgnomecanvas = callPackage ./platform/libgnomecanvas {
-          inherit libart_lgpl;
-          inherit libglade;
-        };
-        gnome-common = callPackage platform/gnome-common { };
+        #        libgnomecanvas = callPackage ./platform/libgnomecanvas {
+        #          inherit libart_lgpl;
+        #          inherit libglade;
+        #        };
+        #        gnome-common = callPackage platform/gnome-common { };
         gnome-settings-daemon = callPackage platform/gnome-settings-daemon {
           inherit libgnomekbd;
           inherit GConf;
@@ -74,11 +83,11 @@
           inherit scrollkeeper;
         };
         gnome-menus = callPackage platform/gnome-menus { };
-        gnome_mime_data = callPackage ./platform/gnome-mime-data { };
-        gtkglext = callPackage ./platform/gtkglext {
-          inherit libX11;
-          inherit libXmu;
-        };
+        #        gnome_mime_data = callPackage ./platform/gnome-mime-data { };
+        #        gtkglext = callPackage ./platform/gtkglext {
+        #          inherit libX11;
+        #          inherit libXmu;
+        #        };
         zenity = callPackage ./platform/zenity { };
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
         vte = callPackage ./platform/vte { };
