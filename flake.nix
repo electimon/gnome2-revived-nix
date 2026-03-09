@@ -96,6 +96,7 @@
         libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
         #        libgnome-keyring = callPackage ./platform/libgnome-keyring { };
         gnome-keyring = callPackage ./platform/gnome-keyring { };
+        gnome-themes = callPackage ./platform/gnome-themes { };
         gnome-terminal = callPackage ./platform/gnome-terminal {
           inherit vte;
           inherit GConf;
@@ -129,6 +130,7 @@
             gnome-control-center
             gnome-settings-daemon
             gnome-keyring
+            gnome-themes
           ];
           pathsToLink = [
             "/bin"
