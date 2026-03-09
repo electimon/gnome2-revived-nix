@@ -162,6 +162,7 @@
               environment.variables = {
                 XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
               };
+              environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
 
               system.activationScripts.gconfSchemas.text = ''
                 export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
