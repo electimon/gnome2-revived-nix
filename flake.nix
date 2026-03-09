@@ -173,12 +173,13 @@
 
               environment.sessionVariables = {
                 XDG_DATA_DIRS = "/run/current-system/sw/share:${self.packages.${system}.default}/share";
-                GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf,xml:readonly:/etc/gconf/gconf.xml.defaults";
+                GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf";
               };
-              environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
+              environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
+
               system.activationScripts.gconfSchemas.text = ''
                 export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
 
