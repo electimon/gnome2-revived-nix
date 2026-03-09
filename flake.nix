@@ -11,6 +11,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       callPackage = pkgs.callPackage;
+      gnome2 = pkgs.gnome2;
       libX11 = pkgs.xorg.libX11;
       libXmu = pkgs.xorg.libXmu;
       isOld = pkgs.lib.versionOlder pkgs.lib.version "25.11";
@@ -107,6 +108,7 @@
             gnome-menus
             gnome-session
             gnome_mime_data
+            gnome2.gnome-icon-theme
             gtkglext
             metacity
             zenity
