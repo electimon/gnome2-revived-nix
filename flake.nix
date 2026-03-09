@@ -214,6 +214,16 @@
                 GCONF_LOCAL_LOCKS = "1";
               };
               environment.etc."gconf".source = "${gnome2GconfTree}/etc/gconf";
+environment.etc."gconf/2/path".text = ''
+xml:readonly:/etc/gconf/gconf.xml.mandatory
+include /etc/gconf/2/local-mandatory.path
+include "$(USERCONFDIR)/gconf/path"
+include "$(HOME)/.gconf.path"
+xml:readwrite:/var/lib/gconf
+xml:readonly:/etc/gconf/gconf.xml.system
+include /etc/gconf/2/local-defaults.path
+xml:readonly:/etc/gconf/gconf.xml.defaults
+'';
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
