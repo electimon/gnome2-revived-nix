@@ -153,10 +153,6 @@
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
         system = system;
 
-        specialArgs = {
-          gnome-session = self.packages.x86_64-linux.gnome-session;
-        };
-
         modules = [
           ./modules/session.nix
           /etc/nixos/configuration.nix

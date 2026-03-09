@@ -1,4 +1,4 @@
-{ config, lib, pkgs, gnome-session, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -16,8 +16,16 @@ in
         name = "gnome2";
         bgSupport = true;
         start = ''
+          # Set GTK_PATH so that GTK+ can find the theme engines.
+          export GTK_PATH=${config.system.path}/lib/gtk-2.0
+
+          # Set GTK_DATA_PREFIX so that GTK+ can find the Xfce themes.
+          export GTK_DATA_PREFIX=${config.system.path}
+
+          # Set XDG_MENU_PREFIX for gnome-panel.
           export XDG_MENU_PREFIX=gnome-
-          exec ${gnome-session}/bin/gnome-session
+
+          exec ${self.packages.x86_64-linux.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
         '';
       }
     ];
