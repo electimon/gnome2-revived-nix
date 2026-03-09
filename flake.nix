@@ -121,5 +121,25 @@
           ];
         };
       };
+      nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
+        system = system;
+
+        modules = [
+          ({ pkgs, ... }: {
+            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+            environment.systemPackages = [
+              self.packages.${system}.default
+            ];
+
+            services.xserver.enable = true;
+            services.xserver.displayManager.startx.enable = true;
+
+            environment.variables = {
+              XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
+            };
+          })
+        ];
+      };
     };
 }
