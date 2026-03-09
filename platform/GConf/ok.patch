@@ -1,0 +1,26 @@
+From 2f3640e45aac3e93397df1a8c884e3ec1aa9542d Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Mon, 9 Mar 2026 06:03:23 -0400
+Subject: [PATCH] ok
+
+---
+ gconf/gconf-internals.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/gconf/gconf-internals.h b/gconf/gconf-internals.h
+index d3a6dd4..abb641b 100644
+--- a/gconf/gconf-internals.h
++++ b/gconf/gconf-internals.h
+@@ -38,6 +38,9 @@
+ #include "gconf-sources.h"
+ #include "GConfX.h"
+ 
++#undef GCONF_CONFDIR
++#define GCONF_CONFDIR "/etc/gconf"
++
+ #ifdef G_OS_WIN32
+ 
+ #define DEV_NULL "NUL:"
+-- 
+2.53.0
+
