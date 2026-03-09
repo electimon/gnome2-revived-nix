@@ -1,0 +1,47 @@
+From 6312e9e0a6713dedca0546f887c21e933c8a52a3 Mon Sep 17 00:00:00 2001
+From: Eicke Herbertz <wolletd@posteo.de>
+Date: Sun, 8 Mar 2026 18:33:12 -0400
+Subject: [PATCH] [PATCH] region panel: add keys removed from libgnomekbd's API
+ (#297)
+
+---
+ plugins/keyboard/gsd-keyboard-xkb.c | 6 ++++++
+ plugins/keyboard/gsd-keyboard-xkb.h | 5 +++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/plugins/keyboard/gsd-keyboard-xkb.c b/plugins/keyboard/gsd-keyboard-xkb.c
+index 0026c93..e661d83 100644
+--- a/plugins/keyboard/gsd-keyboard-xkb.c
++++ b/plugins/keyboard/gsd-keyboard-xkb.c
+@@ -44,6 +44,12 @@
+ 
+ #define GTK_RESPONSE_PRINT 2
+ 
++// These were removed from the API of libgnomekbd in version 3.28
++const gchar GKBD_DESKTOP_CONFIG_KEY_DEFAULT_GROUP[] = "default-group";
++const gchar GKBD_DESKTOP_CONFIG_KEY_GROUP_PER_WINDOW[] = "group-per-window";
++const gchar GKBD_KEYBOARD_CONFIG_KEY_LAYOUTS[] = "layouts";
++const gchar GKBD_KEYBOARD_CONFIG_KEY_OPTIONS[] = "options";
++
+ static GsdKeyboardManager *manager = NULL;
+ 
+ static XklEngine *xkl_engine;
+diff --git a/plugins/keyboard/gsd-keyboard-xkb.h b/plugins/keyboard/gsd-keyboard-xkb.h
+index 21d3705..ee79bea 100644
+--- a/plugins/keyboard/gsd-keyboard-xkb.h
++++ b/plugins/keyboard/gsd-keyboard-xkb.h
+@@ -30,6 +30,11 @@
+ #include <libxklavier/xklavier.h>
+ #include "gsd-keyboard-manager.h"
+ 
++extern const gchar GKBD_DESKTOP_CONFIG_KEY_DEFAULT_GROUP[];
++extern const gchar GKBD_DESKTOP_CONFIG_KEY_GROUP_PER_WINDOW[];
++extern const gchar GKBD_KEYBOARD_CONFIG_KEY_LAYOUTS[];
++extern const gchar GKBD_KEYBOARD_CONFIG_KEY_OPTIONS[];
++
+ void gsd_keyboard_xkb_init (GConfClient *client, GsdKeyboardManager *manager);
+ void gsd_keyboard_xkb_shutdown (void);
+ 
+-- 
+2.53.0
+

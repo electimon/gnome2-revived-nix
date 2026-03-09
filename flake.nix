@@ -2,7 +2,7 @@
   description = "GNOME2 revived";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   };
 
   outputs =
@@ -13,13 +13,13 @@
       callPackage = pkgs.callPackage;
       libX11 = pkgs.xorg.libX11;
       libXmu = pkgs.xorg.libXmu;
+      isOld = pkgs.lib.versionOlder pkgs.lib.version "25.11";
+      libsoup = if pkgs.lib.hasAttr "libsoup_2_4" pkgs then pkgs.libsoup_2_4 else pkgs.libsoup;
       gtk2 = pkgs.gtk2.overrideAttrs (old: {
         postInstall = (old.postInstall or "") + ''
-          if [ -f "$dev/bin/gtk-builder-convert" ]; then
-            chmod +x $dev/bin/gtk-builder-convert
-            substituteInPlace $dev/bin/gtk-builder-convert \
-              --replace "/usr/bin/env python" "${pkgs.python3}/bin/python"
-          fi
+          chmod +x $dev/bin/gtk-builder-convert
+          substituteInPlace $dev/bin/gtk-builder-convert \
+            --replace "/usr/bin/env python" "${pkgs.python3}/bin/python"
         '';
       });
     in
@@ -31,19 +31,26 @@
           inherit zenity;
         };
         libIDL = callPackage ./platform/libIDL { };
-        libgweather = callPackage ./platform/libgweather { inherit GConf; };
+        libgweather = callPackage ./platform/libgweather {
+          inherit GConf;
+          inherit libsoup;
+        };
         gnome-desktop = callPackage ./platform/gnome-desktop {
           inherit GConf;
-          scrollkeeper = scrollkeeper-0_3;
+          inherit scrollkeeper;
         };
         libart_lgpl = callPackage ./platform/libart_lgpl { };
         libglade = callPackage ./platform/libglade { };
+        libgnomekbd = callPackage ./platform/libgnomekbd {
+          inherit gnome-common;
+          inherit GConf;
+        };
         gnome-panel = callPackage ./platform/gnome-panel {
           inherit GConf;
           inherit gnome-menus;
           inherit gnome-desktop;
           inherit libgweather;
-          scrollkeeper = scrollkeeper-0_3;
+          inherit scrollkeeper;
         };
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
         libgnomecanvas = callPackage ./platform/libgnomecanvas {
@@ -51,6 +58,20 @@
           inherit libglade;
         };
         gnome-common = callPackage platform/gnome-common { };
+        gnome-settings-daemon = callPackage platform/gnome-settings-daemon {
+          inherit libgnomekbd;
+          inherit GConf;
+          inherit gnome-desktop;
+        };
+        gnome-control-center = callPackage platform/gnome-control-center {
+          inherit libgnomekbd;
+          inherit gnome-desktop;
+          inherit GConf;
+          inherit gnome-menus;
+          inherit metacity;
+          inherit gnome-settings-daemon;
+          inherit scrollkeeper;
+        };
         gnome-menus = callPackage platform/gnome-menus { };
         gnome_mime_data = callPackage ./platform/gnome-mime-data { };
         gtkglext = callPackage ./platform/gtkglext {
@@ -58,16 +79,19 @@
           inherit libXmu;
         };
         zenity = callPackage ./platform/zenity { };
+        gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
         vte = callPackage ./platform/vte { };
         gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
-        scrollkeeper-0_3 = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
+        scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
         libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
+        #        libgnome-keyring = callPackage ./platform/libgnome-keyring { };
+        gnome-keyring = callPackage ./platform/gnome-keyring { };
         gnome-terminal = callPackage ./platform/gnome-terminal {
           inherit vte;
           inherit GConf;
           inherit gnome-common;
-          gtk2 = gtk2;
-          scrollkeeper = scrollkeeper-0_3;
+          inherit gtk2;
+          inherit scrollkeeper;
         };
         default = pkgs.buildEnv rec {
           name = "gnome2-bootstrap";
@@ -88,9 +112,12 @@
             zenity
             vte
             gnome-terminal
-            scrollkeeper-0_3
+            scrollkeeper
             gnome-desktop
             gnome-panel
+            gnome-control-center
+            gnome-settings-daemon
+            gnome-keyring
           ];
         };
       };

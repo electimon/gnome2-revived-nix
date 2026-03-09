@@ -70,4 +70,6 @@ stdenv.mkDerivation rec {
     description = "Deprecated system for storing application preferences";
     platforms = lib.platforms.unix;
   };
+
+  patches = [ ./0001-liar-dancer-fix-missing-GTK_DIALOG-cast.patch ];
 }

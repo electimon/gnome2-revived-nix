@@ -1,0 +1,39 @@
+From ae070df38076ef8e9baa386e9ce9e24863110a9e Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 7 Mar 2026 09:52:43 -0500
+Subject: [PATCH] gnome-keyring: Fix build error due to missing asn1 prototypes
+
+Signed-off-by: Stella Diaz <electi@yzu.moe>
+---
+ egg/egg-asn1x.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/egg/egg-asn1x.h b/egg/egg-asn1x.h
+index 705e226..8344b08 100644
+--- a/egg/egg-asn1x.h
++++ b/egg/egg-asn1x.h
+@@ -25,6 +25,7 @@
+ #define EGG_ASN1X_H_
+ 
+ #include <glib.h>
++#include <libtasn1.h>
+ 
+ #ifndef HAVE_EGG_ALLOCATOR
+ typedef void* (*EggAllocator) (void* p, gsize);
+@@ -35,13 +36,13 @@ typedef gboolean (*EggAsn1xEncoder) (gpointer data, guchar *buf, gsize n_buf);
+ 
+ struct static_struct_asn;
+ 
+-GNode*              egg_asn1x_create                 (const struct static_struct_asn *defs,
++GNode*              egg_asn1x_create                 (const ASN1_ARRAY_TYPE *defs,
+                                                       const gchar *type);
+ 
+-GNode*              egg_asn1x_create_quark           (const struct static_struct_asn *defs,
++GNode*              egg_asn1x_create_quark           (const ASN1_ARRAY_TYPE *defs,
+                                                       GQuark type);
+ 
+-GNode*              egg_asn1x_create_and_decode      (const struct static_struct_asn *defs,
++GNode*              egg_asn1x_create_and_decode      (const ASN1_ARRAY_TYPE *defs,
+                                                       const gchar *type,
+                                                       gconstpointer data,
+                                                       gsize n_data);

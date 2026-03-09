@@ -4,7 +4,7 @@
   fetchurl,
   which,
   intltool,
-  python,
+  python2,
   pkg-config,
   libSM,
   libICE,
@@ -32,10 +32,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-j3go63ohyBenO2l4RKTiAlYFmzI4ZBShD5fVHn2fyl8";
   };
 
-  makeFlags = [
-    "LDFLAGS=-lgmodule-2.0"
-    "LDFLAGS+=-lm"
-  ];
+  NIX_LDFLAGS = "-lgmodule-2.0 -lm ";
   buildInputs = [
     libSM
     libICE
@@ -53,7 +50,7 @@ stdenv.mkDerivation rec {
   ];
   nativeBuildInputs = [
     intltool
-    python
+    python2
     pkg-config
     libSM
     libICE
@@ -73,4 +70,5 @@ stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
 
+  patches = [ ./0001-every-little-thought-is-a-different-sound-compile-fi.patch ];
 }

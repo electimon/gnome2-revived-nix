@@ -11,7 +11,6 @@
   autoconf,
   automake,
   libtool,
-  python3,
   gtk2,
   libxslt,
   libxml2,

@@ -1,0 +1,26 @@
+From a31af93d56b5bcf0dd5fc5eb470eac808d0666b6 Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Sun, 8 Mar 2026 20:30:35 -0400
+Subject: [PATCH] every little thought is a different sound (compile fixes)
+
+Signed-off-by: Stella Diaz <electi@yzu.moe>
+---
+ gnome-panel/menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gnome-panel/menu.c b/gnome-panel/menu.c
+index bc79856..632e132 100644
+--- a/gnome-panel/menu.c
++++ b/gnome-panel/menu.c
+@@ -1867,7 +1867,7 @@ panel_load_menu_image_deferred (GtkWidget   *image_menu_item,
+ 	gtk_widget_set_size_request (image, icon_height, icon_height);
+ 
+ 	/* this takes over the floating ref */
+-	icon->pixmap = g_object_ref_sink (G_OBJECT (image));
++	icon->pixmap = GTK_WIDGET (g_object_ref_sink (G_OBJECT (image)));
+ 
+ 	icon->stock_id       = stock_id;
+ 	if (gicon)
+-- 
+2.53.0
+

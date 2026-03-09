@@ -9,7 +9,7 @@
   glib,
   gtk2,
   GConf,
-  python,
+  python2,
   gnome-doc-utils,
   libxml2,
   scrollkeeper,
@@ -39,9 +39,13 @@ stdenv.mkDerivation rec {
     gtk2
     glib
     GConf
-    python
+    python2
     gnome-doc-utils
     libxml2
     scrollkeeper
+  ];
+
+  patches = [
+    ./0001-1440-compile-fix.patch
   ];
 }

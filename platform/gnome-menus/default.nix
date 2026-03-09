@@ -5,7 +5,7 @@
   which,
   pkg-config,
   glib,
-  python,
+  python2,
   intltool,
 }:
 
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [
     glib
     which
-    python
+    python2
   ]; # autogen.sh which is using gnome-common tends to require which
   nativeBuildInputs = [
     pkg-config

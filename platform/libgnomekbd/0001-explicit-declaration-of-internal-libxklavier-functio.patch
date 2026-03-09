@@ -1,0 +1,34 @@
+From 42330b5de58dc5aa60e2921d97c636a529c81fb8 Mon Sep 17 00:00:00 2001
+From: infirit <infirit@gmail.com>
+Date: Mon, 18 Nov 2013 15:23:03 +0100
+Subject: [PATCH] explicit declaration of internal libxklavier functions
+
+from lingnomekbd:
+https://git.gnome.org/browse/libgnomekbd/commit/?id=18332fedc6a24e4efeecfdc78a006140c667568a
+https://bugzilla.gnome.org/show_bug.cgi?id=643754
+---
+ libgnomekbd/gkbd-keyboard-drawing.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/libgnomekbd/gkbd-keyboard-drawing.c b/libgnomekbd/gkbd-keyboard-drawing.c
+index 909930b..de21e34 100644
+--- a/libgnomekbd/gkbd-keyboard-drawing.c
++++ b/libgnomekbd/gkbd-keyboard-drawing.c
+@@ -49,6 +49,14 @@ static guint gkbd_keyboard_drawing_signals[NUM_SIGNALS] = { 0 };
+ static void gkbd_keyboard_drawing_set_mods (GkbdKeyboardDrawing * drawing,
+ 					    guint mods);
+ 
++extern gboolean xkl_xkb_config_native_prepare (XklEngine * engine,
++					      const XklConfigRec * data,
++					      gpointer component_names);
++
++extern void xkl_xkb_config_native_cleanup (XklEngine * engine,
++					  gpointer component_names);
++
++
+ static gint
+ xkb_to_pixmap_coord (GkbdKeyboardDrawingRenderContext * context, gint n)
+ {
+-- 
+2.53.0
+

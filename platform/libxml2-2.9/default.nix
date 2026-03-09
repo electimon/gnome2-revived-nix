@@ -5,7 +5,7 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "libIDL";
+  pname = "libxml2-2.9";
   version = "2.9.14";
 
   src = fetchurl {

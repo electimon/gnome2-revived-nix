@@ -38,5 +38,5 @@ stdenv.mkDerivation rec {
     upower
   ];
 
-  makeFlags = ''LDFLAGS=-"lupower-glib" '';
+  NIX_LDFLAGS = "-lupower-glib ";
 }

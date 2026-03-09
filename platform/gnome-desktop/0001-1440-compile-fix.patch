@@ -1,0 +1,26 @@
+From cb732cbee4d36c3e413c2d605ea2df1c43606468 Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Sun, 8 Mar 2026 20:09:04 -0400
+Subject: [PATCH] 1440 (compile fix)
+
+Signed-off-by: Stella Diaz <electi@yzu.moe>
+---
+ libgnome-desktop/gnome-desktop-thumbnail.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libgnome-desktop/gnome-desktop-thumbnail.c b/libgnome-desktop/gnome-desktop-thumbnail.c
+index 9660307..79d76fc 100644
+--- a/libgnome-desktop/gnome-desktop-thumbnail.c
++++ b/libgnome-desktop/gnome-desktop-thumbnail.c
+@@ -619,7 +619,7 @@ mimetype_supported_by_gdk_pixbuf (const char *mime_type)
+         if (!formats_hash) {
+                 GSList *formats, *list;
+ 
+-                formats_hash = g_hash_table_new_full (g_str_hash, g_content_type_equals, g_free, NULL);
++                formats_hash = g_hash_table_new_full (g_str_hash, (GEqualFunc)g_content_type_equals, g_free, NULL);
+ 
+                 formats = gdk_pixbuf_get_formats ();
+                 list = formats;
+-- 
+2.53.0
+
