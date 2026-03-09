@@ -19,6 +19,8 @@
       libIDL = gnome2.libIDL;
       libart_lgpl = gnome2.libart_lgpl;
       libglade = gnome2.libglade;
+      libbonobo = gnome2.libbonobo;
+      gnome_vfs = gnome2.gnome_vfs;
       libgnomecanvas = gnome2.libgnomecanvas;
       gtkglext = gnome2.gtkglext;
       gnome_mime_data = gnome2.gnome_mime_data;
@@ -89,6 +91,7 @@
         #          inherit libXmu;
         #        };
         zenity = callPackage ./platform/zenity { };
+        libgnome = callPackage ./platform/libgnome { inherit gnome_vfs; inherit libbonobo; };
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
         vte = callPackage ./platform/vte { };
         gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
@@ -131,13 +134,7 @@
             gnome-settings-daemon
             gnome-keyring
             gnome-themes
-          ];
-          pathsToLink = [
-            "/bin"
-            "/lib"
-            "/libexec"
-            "/share"
-            "/etc"
+            libgnome
           ];
         };
       };
@@ -165,7 +162,6 @@
               environment.variables = {
                 XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
               };
-              environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
 
               system.activationScripts.gconfSchemas.text = ''
                 export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
