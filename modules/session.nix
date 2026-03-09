@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, ... }:
 
 with lib;
 
@@ -25,7 +25,11 @@ in
           # Set XDG_MENU_PREFIX for gnome-panel.
           export XDG_MENU_PREFIX=gnome-
 
-          exec ${self.packages.x86_64-linux.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
+          # Set TMPDIR for gconf-sanity-check-2
+          export TMPDIR=/tmp
+          export TMP=/tmp
+
+          exec ${pkgs.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
         '';
       }
     ];

@@ -153,6 +153,8 @@
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
         system = system;
 
+        specialArgs = { self = self; };
+
         modules = [
           ./modules/session.nix
           /etc/nixos/configuration.nix
@@ -198,6 +200,19 @@ xml:readonly:/etc/gconf/gconf.xml.defaults
                   echo "Installing GConf schema $s"
                   ${self.packages.${system}.GConf}/bin/gconftool-2 \
                     --makefile-install-rule "$s"
+                done
+                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.entries; do
+                  echo "Installing GConf default entries $s"
+                  if [ $s = "${self.packages.${system}.default}/etc/gconf/schemas/panel-default-setup.entries" ]; then
+                    echo "Encountered gnome-panel defaults!"
+                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
+                  else
+                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                  fi
                 done
               '';
             }
