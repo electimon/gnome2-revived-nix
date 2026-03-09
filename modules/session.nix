@@ -17,7 +17,7 @@ in
         bgSupport = true;
         start = ''
           export XDG_MENU_PREFIX=gnome-
-          exec ${pkgs.gnome2.gnome-session}/bin/gnome-session
+          exec ${gnome-session}/bin/gnome-session
         '';
       }
     ];
