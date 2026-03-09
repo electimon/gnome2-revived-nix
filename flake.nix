@@ -36,15 +36,25 @@
         '';
       });
 
-      gnome2GconfTree = pkgs.runCommand "gnome2-gconf-tree" { } ''
-        mkdir -p $out/etc/gconf/schemas
-        mkdir -p $out/etc/gconf/gconf.xml.defaults
+      gnome2GconfTree =
+        pkgs.runCommand "gnome2-gconf-tree"
+          {
+            buildInputs = [ self.packages.${system}.GConf ];
+          }
+          ''
+            mkdir -p $out/etc/gconf/schemas
+            mkdir -p $out/etc/gconf/gconf.xml.defaults
 
-        if [ -d ${self.packages.${system}.default}/etc/gconf/schemas ]; then
-          cp ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas \
-             $out/etc/gconf/schemas/ || true
-        fi
-      '';
+            cp ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas \
+               $out/etc/gconf/schemas/ || true
+
+            export GCONF_CONFIG_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
+            export GCONF_SCHEMA_INSTALL_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
+
+            for s in $out/etc/gconf/schemas/*.schemas; do
+                gconftool-2 --makefile-install-rule "$s"
+            done
+          '';
 
     in
     {
