@@ -180,7 +180,7 @@ services.xserver.desktopManager.gnome2.enable = true;
 
               environment.sessionVariables = {
                 GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf;xml:readonly:/etc/gconf/gconf.xml.defaults";
-                GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/var/lib/gconf
+                GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/var/lib/gconf;
               };
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
