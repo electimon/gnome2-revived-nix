@@ -35,6 +35,17 @@
             --replace "/usr/bin/env python" "${pkgs.python3}/bin/python"
         '';
       });
+
+      gnome2GconfTree = pkgs.runCommand "gnome2-gconf-tree" { } ''
+        mkdir -p $out/etc/gconf/schemas
+        mkdir -p $out/etc/gconf/gconf.xml.defaults
+
+        if [ -d ${self.packages.${system}.default}/etc/gconf/schemas ]; then
+          cp ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas \
+             $out/etc/gconf/schemas/ || true
+        fi
+      '';
+
     in
     {
       packages.${system} = rec {
@@ -169,7 +180,7 @@
                 "flakes"
               ];
 
-services.xserver.desktopManager.gnome2.enable = true;
+              services.xserver.desktopManager.gnome2.enable = true;
 
               environment.systemPackages = [
                 self.packages.${system}.default
@@ -180,24 +191,13 @@ services.xserver.desktopManager.gnome2.enable = true;
 
               environment.sessionVariables = {
                 GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf;xml:readonly:/etc/gconf/gconf.xml.defaults";
-                GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/var/lib/gconf;
+                GCONF_SCHEMA_INSTALL_SOURCE = "xml:readonly:/etc/gconf/gconf.xml.defaults";
+                GCONF_LOCAL_LOCKS = "1";
               };
+              environment.etc."gconf".source = "${gnome2GconfTree}/etc/gconf";
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
-              environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
-
-              system.activationScripts.gconfSchemas.text = ''
-                export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
-                export GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/var/lib/gconf
-                mkdir -p /var/lib/gconf
-
-                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
-                  echo "Installing GConf schema $s"
-                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                    --makefile-install-rule "$s"
-                done
-              '';
             }
           )
         ];
