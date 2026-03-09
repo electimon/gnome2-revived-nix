@@ -71,5 +71,10 @@ stdenv.mkDerivation rec {
     platforms = lib.platforms.unix;
   };
 
+  postConfigure = ''
+    substituteInPlace gconf/Makefile \
+      --replace '$(sysgconfdir)/$(MAJOR_VERSION)' '/etc/gconf'
+  '';
+
   patches = [ ./0001-liar-dancer-fix-missing-GTK_DIALOG-cast.patch ];
 }
