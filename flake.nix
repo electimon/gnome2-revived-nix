@@ -39,7 +39,10 @@
       gnome2GconfTree =
         pkgs.runCommand "gnome2-gconf-tree"
           {
-            buildInputs = [ self.packages.${system}.GConf ];
+            nativeBuildInputs = [
+              self.packages.${system}.GConf
+              pkgs.dbus
+            ];
           }
           ''
             mkdir -p $out/etc/gconf/schemas
@@ -48,12 +51,18 @@
             cp ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas \
                $out/etc/gconf/schemas/ || true
 
+            export HOME=$TMPDIR/home
+            mkdir -p $HOME
+
             export GCONF_CONFIG_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
             export GCONF_SCHEMA_INSTALL_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
+            export GCONF_LOCAL_LOCKS=1
 
-            for s in $out/etc/gconf/schemas/*.schemas; do
+            dbus-run-session sh -c '
+              for s in '"$out"'/etc/gconf/schemas/*.schemas; do
                 gconftool-2 --makefile-install-rule "$s"
-            done
+              done
+            '
           '';
 
     in
