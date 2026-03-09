@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  gnome-session,
-  ...
-}:
+{ config, lib, pkgs, gnome-session, ... }:
 
 with lib;
 
@@ -12,7 +6,8 @@ let
   cfg = config.services.xserver.desktopManager.gnome2;
 in
 {
-  options.services.xserver.desktopManager.gnome2.enable = mkEnableOption "GNOME 2 revived";
+  options.services.xserver.desktopManager.gnome2.enable =
+    mkEnableOption "GNOME 2 revived";
 
   config = mkIf cfg.enable {
 

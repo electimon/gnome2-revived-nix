@@ -35,36 +35,6 @@
             --replace "/usr/bin/env python" "${pkgs.python3}/bin/python"
         '';
       });
-
-      gnome2GconfTree =
-        pkgs.runCommand "gnome2-gconf-tree"
-          {
-            nativeBuildInputs = [
-              self.packages.${system}.GConf
-              pkgs.dbus
-            ];
-          }
-          ''
-            mkdir -p $out/etc/gconf/schemas
-            mkdir -p $out/etc/gconf/gconf.xml.defaults
-
-            cp ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas \
-               $out/etc/gconf/schemas/ || true
-
-            export HOME=$TMPDIR/home
-            mkdir -p $HOME
-
-            export GCONF_CONFIG_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
-            export GCONF_SCHEMA_INSTALL_SOURCE="xml:readwrite:$out/etc/gconf/gconf.xml.defaults"
-            export GCONF_LOCAL_LOCKS=1
-
-            dbus-run-session sh -c '
-              for s in '"$out"'/etc/gconf/schemas/*.schemas; do
-                gconftool-2 --makefile-install-rule "$s"
-              done
-            '
-          '';
-
     in
     {
       packages.${system} = rec {
@@ -199,7 +169,7 @@
                 "flakes"
               ];
 
-              services.xserver.desktopManager.gnome2.enable = true;
+services.xserver.desktopManager.gnome2.enable = true;
 
               environment.systemPackages = [
                 self.packages.${system}.default
@@ -210,13 +180,24 @@
 
               environment.sessionVariables = {
                 GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf;xml:readonly:/etc/gconf/gconf.xml.defaults";
-                GCONF_SCHEMA_INSTALL_SOURCE = "xml:readonly:/etc/gconf/gconf.xml.defaults";
-                GCONF_LOCAL_LOCKS = "1";
+                GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/var/lib/gconf;
               };
-              environment.etc."gconf".source = "${gnome2GconfTree}/etc/gconf";
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
+              environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
+
+              system.activationScripts.gconfSchemas.text = ''
+                export GCONF_CONFIG_SOURCE=xml:readwrite:/etc/gconf/gconf.xml.defaults
+                export GCONF_SCHEMA_INSTALL_SOURCE=xml:readwrite:/etc/gconf/gconf.xml.defaults
+                mkdir -p /etc/gconf/gconf.xml.defaults
+
+                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
+                  echo "Installing GConf schema $s"
+                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                    --install-schema-file "$s"
+                done
+              '';
             }
           )
         ];
