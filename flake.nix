@@ -177,8 +177,6 @@ services.xserver.desktopManager.gnome2.enable = true;
               services.xserver.displayManager.startx.enable = true;
 
 environment.etc."gconf/2/path".text = ''
-xml:readonly:/etc/gconf/gconf.xml.mandatory
-include /etc/gconf/2/local-mandatory.path
 include "$(USERCONFDIR)/gconf/path"
 include "$(HOME)/.gconf.path"
 xml:readwrite:/var/lib/gconf

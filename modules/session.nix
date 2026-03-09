@@ -27,7 +27,6 @@ in
 
           # Set TMPDIR for gconf-sanity-check-2
           export TMPDIR=/tmp
-          export TMP=/tmp
 
           exec ${pkgs.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
         '';

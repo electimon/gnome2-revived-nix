@@ -22,5 +22,19 @@ index d3a6dd4..abb641b 100644
  
  #define DEV_NULL "NUL:"
 -- 
+diff --git a/gconf/gconf-sanity-check.c b/gconf/gconf-sanity-check.c
+index 5d7caa1..ed2ad9f 100644
+--- a/gconf/gconf-sanity-check.c
++++ b/gconf/gconf-sanity-check.c
+@@ -65,7 +65,7 @@ main (int argc, char** argv)
+   if (!check_file_locking ())
+     return 1;
+ 
+-  if (!check_gconf (FALSE))
++  if (!check_gconf (TRUE))
+     {
+       if (!offer_delete_locks ())
+         return 1;
+-- 
 2.53.0
 
