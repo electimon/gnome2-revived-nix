@@ -2,7 +2,7 @@
   description = "GNOME2 revived";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
   };
 
   outputs =
@@ -119,12 +119,15 @@
             gnome-settings-daemon
             gnome-keyring
           ];
+          pathsToLink = [ "/bin" "/lib" "/libexec" "/share" "/etc" ];
         };
       };
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
         system = system;
 
         modules = [
+          /etc/nixos/configuration.nix
+
           ({ pkgs, ... }: {
             nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -138,6 +141,9 @@
             environment.variables = {
               XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
             };
+            environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
+
+
           })
         ];
       };
