@@ -92,10 +92,16 @@
         #          inherit libXmu;
         #        };
         zenity = callPackage ./platform/zenity { };
-        libgnome = callPackage ./platform/libgnome { inherit gnome_vfs; inherit libbonobo; };
+        libgnome = callPackage ./platform/libgnome {
+          inherit gnome_vfs;
+          inherit libbonobo;
+        };
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
         vte = callPackage ./platform/vte { };
-        nautilus = callPackage ./platform/nautilus { inherit GConf; inherit gnome-desktop; };
+        nautilus = callPackage ./platform/nautilus {
+          inherit GConf;
+          inherit gnome-desktop;
+        };
         gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
         scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
         libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
@@ -164,8 +170,9 @@
               services.xserver.enable = true;
               services.xserver.displayManager.startx.enable = true;
 
-              environment.variables = {
-                XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
+              environment.sessionVariables = {
+                XDG_DATA_DIRS = "/run/current-system/sw/share:${self.packages.${system}.default}/share";
+                GCONF_CONFIG_SOURCE = "xml:readwrite:/var/lib/gconf,xml:readonly:/etc/gconf/gconf.xml.defaults";
               };
               environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
 

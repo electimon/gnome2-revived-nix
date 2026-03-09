@@ -7,7 +7,7 @@
   pkg-config,
   gtk_engines,
   gtk2,
-  iconnamingutils
+  iconnamingutils,
 }:
 
 stdenv.mkDerivation rec {
@@ -19,7 +19,15 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-hgHuJMLgllkyIcvW69tmhgQiJaA8AqAcDWfBY/n+vRo=";
   };
 
-  buildInputs = [ gtk_engines gtk2 ];
-  nativeBuildInputs = [ pkg-config intltool gtk2 iconnamingutils ];
+  buildInputs = [
+    gtk_engines
+    gtk2
+  ];
+  nativeBuildInputs = [
+    pkg-config
+    intltool
+    gtk2
+    iconnamingutils
+  ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-themes tends to require which
 }

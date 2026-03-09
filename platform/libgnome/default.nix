@@ -8,7 +8,7 @@
   gnome_vfs,
   libcanberra,
   libbonobo,
-  glib
+  glib,
 }:
 
 stdenv.mkDerivation rec {
@@ -20,7 +20,19 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-ssY5FoZkhXk7hzmCZt13eFSMFzSSPCcqlNhO4BG296Q=";
   };
 
-  buildInputs = [ gnome_vfs libcanberra glib libbonobo ];
-  nativeBuildInputs = [ intltool pkg-config gnome_vfs libcanberra glib libbonobo ];
+  buildInputs = [
+    gnome_vfs
+    libcanberra
+    glib
+    libbonobo
+  ];
+  nativeBuildInputs = [
+    intltool
+    pkg-config
+    gnome_vfs
+    libcanberra
+    glib
+    libbonobo
+  ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using libgnome tends to require which
 }
