@@ -119,7 +119,13 @@
             gnome-settings-daemon
             gnome-keyring
           ];
-          pathsToLink = [ "/bin" "/lib" "/libexec" "/share" "/etc" ];
+          pathsToLink = [
+            "/bin"
+            "/lib"
+            "/libexec"
+            "/share"
+            "/etc"
+          ];
         };
       };
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
@@ -128,23 +134,39 @@
         modules = [
           /etc/nixos/configuration.nix
 
-          ({ pkgs, ... }: {
-            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          (
+            { pkgs, ... }:
+            {
+              nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
 
-            environment.systemPackages = [
-              self.packages.${system}.default
-            ];
+              environment.systemPackages = [
+                self.packages.${system}.default
+              ];
 
-            services.xserver.enable = true;
-            services.xserver.displayManager.startx.enable = true;
+              services.xserver.enable = true;
+              services.xserver.displayManager.startx.enable = true;
 
-            environment.variables = {
-              XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
-            };
-            environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
+              environment.variables = {
+                XDG_DATA_DIRS = "${self.packages.${system}.default}/share:$XDG_DATA_DIRS";
+              };
+              environment.etc."gconf".source = "${self.packages.${system}.default}/etc/gconf";
 
+              system.activationScripts.gconfSchemas.text = ''
+                export GCONF_CONFIG_SOURCE=xml:readwrite:/var/lib/gconf
 
-          })
+                mkdir -p /var/lib/gconf
+
+                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
+                  echo "Installing GConf schema $s"
+                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                    --makefile-install-rule "$s"
+                done
+              '';
+            }
+          )
         ];
       };
     };
