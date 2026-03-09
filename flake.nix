@@ -185,7 +185,7 @@ services.xserver.desktopManager.gnome2.enable = true;
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
-              environment.etc."gconf/2".source = "${GConf}/etc/gconf/2";
+              environment.etc."gconf/2".source = "${self.packages.x86_64-linux.GConf}/etc/gconf/2";
               environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
 
               system.activationScripts.gconfSchemas.text = ''
