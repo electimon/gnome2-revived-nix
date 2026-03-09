@@ -25,6 +25,7 @@
       gtkglext = gnome2.gtkglext;
       gnome_mime_data = gnome2.gnome_mime_data;
       gnome-common = gnome2.gnome-common;
+      xdg-user-dirs = pkgs.xdg-user-dirs;
       isOld = pkgs.lib.versionOlder pkgs.lib.version "25.11";
       libsoup = if pkgs.lib.hasAttr "libsoup_2_4" pkgs then pkgs.libsoup_2_4 else pkgs.libsoup;
       gtk2 = pkgs.gtk2.overrideAttrs (old: {
@@ -94,6 +95,7 @@
         libgnome = callPackage ./platform/libgnome { inherit gnome_vfs; inherit libbonobo; };
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
         vte = callPackage ./platform/vte { };
+        nautilus = callPackage ./platform/nautilus { inherit GConf; inherit gnome-desktop; };
         gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
         scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
         libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
@@ -135,6 +137,9 @@
             gnome-keyring
             gnome-themes
             libgnome
+            gtk2.out
+            xdg-user-dirs
+            nautilus
           ];
         };
       };
