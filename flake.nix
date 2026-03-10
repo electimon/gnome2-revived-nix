@@ -175,7 +175,7 @@
           ];
           postPatch = (old.postPatch or "") + ''
             substituteInPlace gui/interface.c \
-              --replace 'MPLAYER_DATADIR "/skins"' '"/usr/share/mplayer/skins"'
+              --replace 'MPLAYER_DATADIR "/skins"' '"/run/current-system/sw/share/mplayer/skins"'
           '';
         });
         mplayer-skins = callPackage ./desktop/mplayer-skins { };
@@ -212,6 +212,12 @@
             vte
             xdg-user-dirs
             zenity
+          ];
+        };
+
+        extra-utils = pkgs.buildEnv rec {
+          name = "extra-utils";
+          paths = [
           ];
         };
 
@@ -253,6 +259,7 @@
 
               environment.systemPackages = [
                 self.packages.${system}.default
+                self.packages.${system}.extra-utils
                 self.packages.${system}.extra-apps
               ];
 
@@ -267,9 +274,6 @@
                 include /etc/gconf/2/local-defaults.path
                 xml:readonly:/etc/gconf/gconf.xml.defaults
               '';
-              systemd.tmpfiles.rules = [
-                "d /var/lib/gconf 0755 root root -"
-              ];
               environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
 
               system.activationScripts.gconfSchemas.text = ''

@@ -10,7 +10,8 @@ pkgs.stdenv.mkDerivation {
   };
 
   installPhase = ''
-    mkdir -p $out/usr/share/mplayer/skins
-    tar -xjf $src -C $out/usr/share/mplayer/skins
+    mkdir -p $out/share/mplayer/skins
+    tar -xjf $src -C $out/share/mplayer/skins
+    ln -s $out/share/mplayer/skins/Blue $out/share/mplayer/skins/default
   '';
 }
