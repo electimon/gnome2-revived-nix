@@ -152,7 +152,7 @@
           inherit GConf;
           inherit zenity;
         };
-
+  
         nautilus = callPackage ./platform/nautilus {
           inherit GConf;
           inherit gnome-desktop;
@@ -200,6 +200,13 @@
             zenity
           ];
         };
+
+        extra-apps = pkgs.buildEnv rec {
+          name = "extra-apps";
+          paths = [
+            (mplayer { x11Support = true; })
+          ];
+        };
       };
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
         system = system;
@@ -231,6 +238,7 @@
 
               environment.systemPackages = [
                 self.packages.${system}.default
+                self.packages.${system}.extra-apps
               ];
 
               services.xserver.enable = true;
