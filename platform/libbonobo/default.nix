@@ -14,7 +14,7 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "libbonobo";
+  pname = "libbonoboui";
   version = "2.32.1";
 
   src = fetchurl {

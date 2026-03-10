@@ -22,11 +22,11 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-IhJjfmzN9e+SkxVAjlEUVbzJwV+TL125QlS5llfdNB4";
   };
 
-  outputs = [
-    "out"
-    "dev"
-    "man"
-  ];
+  # outputs = [
+  #   "out"
+  #   "dev"
+  #   "man"
+  # ];
 
   strictDeps = true;
 

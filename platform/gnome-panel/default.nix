@@ -20,6 +20,8 @@
   gnome-doc-utils,
   libxml2,
   libxslt,
+  libbonobo,
+  libbonoboui,
   scrollkeeper,
 }:
 
@@ -47,6 +49,8 @@ stdenv.mkDerivation rec {
     libgweather
     libxml2
     libxslt
+    libbonoboui
+    libbonobo
   ];
   nativeBuildInputs = [
     intltool
@@ -70,5 +74,13 @@ stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
 
+  configureFlags = [ "--enable-bonobo" ];
+
   patches = [ ./0001-every-little-thought-is-a-different-sound-compile-fi.patch ];
+
+  NIX_CFLAGS_COMPILE = [ 
+    "-I${GConf}/include/gconf/2" # fucking bonobo build path isnt including this path even though all the other makefiles do, i need 2 patch this but i cba rn
+    "-Wno-implicit-function-declaration" # how fucking broken is this shit?? panel-applets-bonobo-module.c:32:9: error: implicit declaration of function 'panel_applets_manager_bonobo_register'; did you mean 'panel_applets_manager_bonobo_get_type'?
+    # HELLO??
+  ];
 }

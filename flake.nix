@@ -135,6 +135,8 @@
           inherit libgweather;
           inherit scrollkeeper;
           inherit gnome-doc-utils;
+          inherit libbonobo;
+          inherit libbonoboui;
         };
 
         gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
@@ -156,9 +158,25 @@
 
         gnome-themes = callPackage ./platform/gnome-themes { };
 
+        gnome-utils = callPackage ./platform/gnome-utils {
+          inherit GConf;
+          inherit gnome-panel; # tell me why im including the ENTIRE gnome-panel TODO fix this to use dev output or sm shit
+          inherit libbonoboui;
+          inherit gnome-doc-utils; # TODO, make including this include scrollkeeper
+          inherit scrollkeeper;
+        };
+
         gnome_vfs = callPackage ./platform/gnome-vfs {
           inherit GConf;
           inherit gnome_mime_data;
+        };
+
+        libbonoboui = callPackage ./platform/libbonoboui {
+          inherit GConf;
+          inherit libgnome;
+          inherit libgnomecanvas;
+          inherit libbonobo;
+          inherit libglade;
         };
 
         libbonobo = callPackage ./platform/libbonobo { inherit ORBit2; };
@@ -223,12 +241,13 @@
             gnome-icon-theme
             gnome-keyring
             gnome-menus
+            gnome_mime_data
             gnome-panel
             gnome-session
             gnome-settings-daemon
             gnome-themes
             gnome-terminal
-            gnome_mime_data
+            gnome-utils
             gtk2.out
             gtkglext
             pkgs.hicolor-icon-theme
@@ -310,7 +329,7 @@
               environment.etc."gconf/2/path".text = ''
                 include "$(USERCONFDIR)/gconf/path"
                 include "$(HOME)/.gconf.path"
-                xml:readwrite:/var/lib/gconf
+                xml:readwrite:$(HOME)/.gconf
                 include /etc/gconf/2/local-defaults.path
                 xml:readonly:/etc/gconf/gconf.xml.defaults
               '';

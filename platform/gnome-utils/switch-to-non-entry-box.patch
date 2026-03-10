@@ -1,0 +1,37 @@
+--- gnome-utils-2.32.0/gsearchtool/libgnomeui-deprecated/gsearchtool-entry.c	2009-09-21 15:54:41.000000000 +0000
++++ /tmp/gsearchtool-entry.c	2026-03-10 11:26:43.533654339 +0000
+@@ -60,7 +60,7 @@
+ 	GConfClient        *gconf_client;
+ };
+ 
+-G_DEFINE_TYPE (GsearchHistoryEntry, gsearch_history_entry, GTK_TYPE_COMBO_BOX_ENTRY)
++G_DEFINE_TYPE (GsearchHistoryEntry, gsearch_history_entry, GTK_TYPE_COMBO_BOX)
+ 
+ static void
+ gsearch_history_entry_set_property (GObject      *object,
+@@ -539,7 +539,7 @@
+ 	ret = g_object_new (GSEARCH_TYPE_HISTORY_ENTRY,
+ 			    "history-id", history_id,
+ 	                    "model", store,
+-			    "text-column", 0,
++			    "entry-text-column", 0,
+ 	                    NULL);
+ 
+ 	g_object_unref (store);
+--- gnome-utils-2.32.0/gsearchtool/libgnomeui-deprecated/gsearchtool-entry.h	2009-09-21 15:54:41.000000000 +0000
++++ /tmp/gsearchtool-entry.h	2026-03-10 11:26:45.559946338 +0000
+@@ -47,12 +47,12 @@
+ 
+ struct _GsearchHistoryEntryClass
+ {
+-	GtkComboBoxEntryClass parent_class;
++	GtkComboBoxClass parent_class;
+ };
+ 
+ struct _GsearchHistoryEntry
+ {
+-	GtkComboBoxEntry parent_instance;
++	GtkComboBox parent_instance;
+ 	GsearchHistoryEntryPrivate *priv;
+ };
+ 
