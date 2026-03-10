@@ -27,7 +27,11 @@
       #      GConf = pkgs.gnome2.GConf; # for using official GConf pkg
       gnome-common = pkgs.gnome2.gnome-common;
       # This was renamed in 25.11? or 25.05 whatever the fuck
-      gnome-icon-theme = if pkgs.lib.hasAttr "gnome-icon-theme" pkgs then pkgs.gnome-icon-theme else pkgs.gnome2.gnome-icon-theme;
+      gnome-icon-theme =
+        if pkgs.lib.hasAttr "gnome-icon-theme" pkgs then
+          pkgs.gnome-icon-theme
+        else
+          pkgs.gnome2.gnome-icon-theme;
       gnome_mime_data = pkgs.gnome2.gnome_mime_data;
       # For some reason the official package doesn't seem to fix this bin? maybe no one uses it...
       gtk2 = pkgs.gtk2.overrideAttrs (old: {
@@ -70,30 +74,33 @@
 
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
 
-        gconf-defaults = pkgs.runCommand "gconf-defaults" {
-          buildInputs = [ GConf ];
-        } ''
-          export GCONF_CONFIG_SOURCE=xml:merged:$out/etc/gconf/gconf.xml.defaults
-          mkdir -p $out/etc/gconf/gconf.xml.defaults
+        gconf-defaults =
+          pkgs.runCommand "gconf-defaults"
+            {
+              buildInputs = [ GConf ];
+            }
+            ''
+              export GCONF_CONFIG_SOURCE=xml:merged:$out/etc/gconf/gconf.xml.defaults
+              mkdir -p $out/etc/gconf/gconf.xml.defaults
 
-          for s in ${gnome-base}/etc/gconf/schemas/*.schemas; do
-            ${GConf}/bin/gconftool-2 --makefile-install-rule "$s"
-          done
+              for s in ${gnome-base}/etc/gconf/schemas/*.schemas; do
+                ${GConf}/bin/gconftool-2 --makefile-install-rule "$s"
+              done
 
-          for s in ${gnome-base}/etc/gconf/schemas/*.entries; do
-            echo "Installing GConf default entries $s"
-            if [ $s = "${gnome-base}/etc/gconf/schemas/panel-default-setup.entries" ]; then
-              echo "Encountered gnome-panel defaults!"
-              ${GConf}/bin/gconftool-2 \
-                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
-              ${GConf}/bin/gconftool-2 \
-                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
-            else
-              ${GConf}/bin/gconftool-2 \
-                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
-            fi
-          done
-        '';
+              for s in ${gnome-base}/etc/gconf/schemas/*.entries; do
+                echo "Installing GConf default entries $s"
+                if [ $s = "${gnome-base}/etc/gconf/schemas/panel-default-setup.entries" ]; then
+                  echo "Encountered gnome-panel defaults!"
+                  ${GConf}/bin/gconftool-2 \
+                    --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                  ${GConf}/bin/gconftool-2 \
+                    --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
+                else
+                  ${GConf}/bin/gconftool-2 \
+                    --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                fi
+              done
+            '';
 
         gnome-control-center = callPackage platform/gnome-control-center {
           inherit libgnomekbd;
@@ -177,7 +184,7 @@
           inherit GConf;
           inherit zenity;
         };
-  
+
         nautilus = callPackage ./platform/nautilus {
           inherit GConf;
           inherit gnome-desktop;
@@ -192,10 +199,10 @@
         };
 
         mplayer = (pkgs.mplayer.override { x11Support = true; }).overrideAttrs (old: {
-          configureFlags = (old.configureFlags or []) ++ [
+          configureFlags = (old.configureFlags or [ ]) ++ [
             "--enable-gui"
           ];
-          buildInputs = (old.buildInputs or []) ++ [
+          buildInputs = (old.buildInputs or [ ]) ++ [
             gtk2
           ];
           postPatch = (old.postPatch or "") + ''
@@ -296,10 +303,9 @@
                 self.packages.${system}.extra-apps
               ];
 
-              services.xserver.enable = true;
-              services.xserver.displayManager.startx.enable = true;
-
-              environment.etc."gconf/gconf.xml.defaults".source = "${self.packages.${system}.gconf-defaults}/etc/gconf/gconf.xml.defaults";
+              environment.etc."gconf/gconf.xml.defaults".source = "${
+                self.packages.${system}.gconf-defaults
+              }/etc/gconf/gconf.xml.defaults";
 
               environment.etc."gconf/2/path".text = ''
                 include "$(USERCONFDIR)/gconf/path"
@@ -308,6 +314,30 @@
                 include /etc/gconf/2/local-defaults.path
                 xml:readonly:/etc/gconf/gconf.xml.defaults
               '';
+
+              # Enable the X11 windowing system.
+              # Gnome 2 no supports wayland
+              services.xserver.enable = true;
+              # We should change this to gdm soon
+              services.xserver.displayManager.lightdm.enable = true;
+
+              # Configure keymap in X11
+              services.xserver.xkb.layout = "us";
+
+              # We need to use dbus or gnome will DIE
+              services.dbus.enable = true;
+              # and we need to start dbus-daemon not broker
+              services.dbus.implementation = "dbus";
+              services.xserver.updateDbusEnvironment = true;
+              # Im praying this works
+              security.polkit.enable = true;
+
+              xdg.mime.enable = true;
+              xdg.icons.enable = true;
+
+              # I forgot why i need this
+              environment.pathsToLink = [ "/share" ];
+
             }
           )
         ];
