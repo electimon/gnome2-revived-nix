@@ -166,6 +166,15 @@
           inherit gnome-doc-utils;
         };
 
+        mplayer = (pkgs.mplayer.override { x11Support = true; }).overrideAttrs (old: {
+          configureFlags = (old.configureFlags or []) ++ [
+            "--enable-gui"
+          ];
+          buildInputs = (old.buildInputs or []) ++ [
+            gtk2
+          ];
+        });
+
         default = pkgs.buildEnv rec {
           name = "gnome2-bootstrap";
           paths = [
@@ -204,7 +213,7 @@
         extra-apps = pkgs.buildEnv rec {
           name = "extra-apps";
           paths = [
-            (pkgs.mplayer.override { x11Support = true; })
+            mplayer
           ];
         };
       };
