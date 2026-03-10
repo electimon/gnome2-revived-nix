@@ -70,6 +70,31 @@
 
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
 
+        gconf-defaults = pkgs.runCommand "gconf-defaults" {
+          buildInputs = [ GConf ];
+        } ''
+          export GCONF_CONFIG_SOURCE=xml:merged:$out/etc/gconf/gconf.xml.defaults
+          mkdir -p $out/etc/gconf/gconf.xml.defaults
+
+          for s in ${gnome-base}/etc/gconf/schemas/*.schemas; do
+            ${GConf}/bin/gconftool-2 --makefile-install-rule "$s"
+          done
+
+          for s in ${gnome-base}/etc/gconf/schemas/*.entries; do
+            echo "Installing GConf default entries $s"
+            if [ $s = "${gnome-base}/etc/gconf/schemas/panel-default-setup.entries" ]; then
+              echo "Encountered gnome-panel defaults!"
+              ${GConf}/bin/gconftool-2 \
+                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
+              ${GConf}/bin/gconftool-2 \
+                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
+            else
+              ${GConf}/bin/gconftool-2 \
+                --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
+            fi
+          done
+        '';
+
         gnome-control-center = callPackage platform/gnome-control-center {
           inherit libgnomekbd;
           inherit gnome-desktop;
@@ -180,8 +205,8 @@
         });
         mplayer-skins = callPackage ./desktop/mplayer-skins { };
 
-        default = pkgs.buildEnv rec {
-          name = "gnome2-bootstrap";
+        gnome-base = pkgs.buildEnv {
+          name = "gnome2-base";
           paths = [
             GConf
             ORBit2
@@ -212,6 +237,14 @@
             vte
             xdg-user-dirs
             zenity
+          ];
+        };
+
+        default = pkgs.buildEnv {
+          name = "gnome2-bootstrap";
+          paths = [
+            gnome-base
+            gconf-defaults
           ];
         };
 
@@ -266,41 +299,14 @@
               services.xserver.enable = true;
               services.xserver.displayManager.startx.enable = true;
 
+              environment.etc."gconf/gconf.xml.defaults".source = "${self.packages.${system}.gconf-defaults}/etc/gconf/gconf.xml.defaults";
+
               environment.etc."gconf/2/path".text = ''
                 include "$(USERCONFDIR)/gconf/path"
                 include "$(HOME)/.gconf.path"
                 xml:readwrite:/var/lib/gconf
-                xml:readonly:/etc/gconf/gconf.xml.system
                 include /etc/gconf/2/local-defaults.path
                 xml:readonly:/etc/gconf/gconf.xml.defaults
-              '';
-              environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
-
-              system.activationScripts.gconfSchemas.text = ''
-                                export GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
-                #                export GCONF_SCHEMA_INSTALL_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
-                                mkdir -p /etc/gconf/gconf.xml.defaults
-
-                                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
-                                  echo "Installing GConf schema $s"
-                                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                                    --makefile-install-rule "$s"
-                                done
-                                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.entries; do
-                                  echo "Installing GConf default entries $s"
-                                  if [ $s = "${
-                                    self.packages.${system}.default
-                                  }/etc/gconf/schemas/panel-default-setup.entries" ]; then
-                                    echo "Encountered gnome-panel defaults!"
-                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
-                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
-                                  else
-                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
-                                  fi
-                                done
               '';
             }
           )
