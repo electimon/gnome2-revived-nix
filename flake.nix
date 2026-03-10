@@ -204,7 +204,7 @@
         extra-apps = pkgs.buildEnv rec {
           name = "extra-apps";
           paths = [
-            (mplayer { x11Support = true; })
+            (pkgs.mplayer.override { x11Support = true; })
           ];
         };
       };
