@@ -226,7 +226,7 @@
 
               # This is from modules/session.nix
               # it enables gnome2 selection in your display manager
-              services.xserver.desktopManager.pkgs.gnome2.enable = true;
+              services.xserver.desktopManager.gnome2.enable = true;
 
               environment.systemPackages = [
                 self.packages.${system}.default
