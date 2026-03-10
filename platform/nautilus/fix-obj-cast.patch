@@ -1,0 +1,25 @@
+From 66f21141100ecd5cc0a56ccd9bdd949b3b5e88c0 Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Mon, 9 Mar 2026 21:19:17 -0400
+Subject: [PATCH] ffuuuck (compile fixes)
+
+---
+ src/nautilus-bookmark-list.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nautilus-bookmark-list.c b/src/nautilus-bookmark-list.c
+index d21b814..63b80a0 100644
+--- a/src/nautilus-bookmark-list.c
++++ b/src/nautilus-bookmark-list.c
+@@ -186,7 +186,7 @@ do_constructor (GType type,
+ 	GObject *retval;
+ 
+ 	if (singleton != NULL) {
+-		return g_object_ref (singleton);
++		return G_OBJECT (g_object_ref (singleton));
+ 	}
+ 
+ 	retval = G_OBJECT_CLASS (nautilus_bookmark_list_parent_class)->constructor
+-- 
+2.53.0
+

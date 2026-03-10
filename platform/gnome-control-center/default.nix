@@ -69,4 +69,7 @@ stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-control-center tends to require which
   NIX_LDFLAGS = "-lgmodule-2.0";
+  patches = [
+    ./0001-add-missing-G_CALLBACK.patch
+  ];
 }

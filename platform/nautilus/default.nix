@@ -36,4 +36,7 @@ stdenv.mkDerivation rec {
     libSM
   ];
   NIX_LDFLAGS = "-lgmodule-2.0";
+  patches = [
+    ./fix-obj-cast.patch
+  ];
 }

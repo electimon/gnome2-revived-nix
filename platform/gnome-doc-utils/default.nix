@@ -7,7 +7,7 @@
   pkg-config,
   libxslt,
   intltool,
-  libxml2,
+  libxml2-2_9,
   scrollkeeper,
 }:
 
@@ -22,17 +22,21 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     python2
-    libxml2
+    libxml2-2_9
   ];
   nativeBuildInputs = [
     python2
     pkg-config
+    libxml2-2_9
     libxslt
     intltool
     scrollkeeper
   ];
+
+  # This package has xml2po in it, so anyone using it implictly needs
+  # python as well as the libxml python module for xml2po to function
   propagatedBuildInputs = [
-    which
     python2
-  ]; # autogen.sh which is using gnome-doc-utils tends to require which
+    libxml2-2_9
+  ];
 }

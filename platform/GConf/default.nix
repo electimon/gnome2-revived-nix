@@ -71,5 +71,8 @@ stdenv.mkDerivation rec {
     platforms = lib.platforms.unix;
   };
 
-  patches = [ ./0001-liar-dancer-fix-missing-GTK_DIALOG-cast.patch ./ok.patch ];
+  patches = [
+    ./0001-liar-dancer-fix-missing-GTK_DIALOG-cast.patch
+    ./ok.patch
+  ];
 }

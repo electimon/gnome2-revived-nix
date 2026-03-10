@@ -1,4 +1,10 @@
-{ config, lib, pkgs, self, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  self,
+  ...
+}:
 
 with lib;
 
@@ -6,14 +12,13 @@ let
   cfg = config.services.xserver.desktopManager.gnome2;
 in
 {
-  options.services.xserver.desktopManager.gnome2.enable =
-    mkEnableOption "GNOME 2 revived";
+  options.services.xserver.desktopManager.gnome2.enable = mkEnableOption "GNOME 2 Revived";
 
   config = mkIf cfg.enable {
 
     services.xserver.desktopManager.session = [
       {
-        name = "gnome2";
+        name = "Gnome 2 (r)";
         bgSupport = true;
         start = ''
           # Set GTK_PATH so that GTK+ can find the theme engines.

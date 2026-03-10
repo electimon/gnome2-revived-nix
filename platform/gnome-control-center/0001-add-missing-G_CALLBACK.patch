@@ -1,0 +1,26 @@
+From 6a2cbe2ee4f4ea04b0d91727ae674f5115e7cfd6 Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Sat, 7 Mar 2026 13:06:43 -0500
+Subject: [PATCH] add missing G_CALLBACK
+
+Signed-off-by: Stella Diaz <electi@yzu.moe>
+---
+ font-viewer/font-view.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/font-viewer/font-view.c b/font-viewer/font-view.c
+index 56c557a..6156f1e 100644
+--- a/font-viewer/font-view.c
++++ b/font-viewer/font-view.c
+@@ -567,7 +567,7 @@ main(int argc, char **argv)
+     gtk_widget_modify_bg(drawing_area, GTK_STATE_NORMAL, &white);
+     gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(swin),
+ 					  drawing_area);
+-    g_signal_connect (drawing_area, "realize", create_text_pixmap, face);
++    g_signal_connect (drawing_area, "realize", G_CALLBACK (create_text_pixmap), face);
+ 
+     /* set the minimum size on the scrolled window to prevent
+      * unnecessary scrolling */
+-- 
+2.53.0
+

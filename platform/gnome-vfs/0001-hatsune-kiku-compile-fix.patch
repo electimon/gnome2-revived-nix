@@ -1,0 +1,26 @@
+From b8b6d3589448d202fc8c1febf5d10cc32f24bd06 Mon Sep 17 00:00:00 2001
+From: Stella Diaz <electi@yzu.moe>
+Date: Mon, 9 Mar 2026 21:12:00 -0400
+Subject: [PATCH] hatsune kiku (compile fix)
+
+Signed-off-by: Stella Diaz <electi@yzu.moe>
+---
+ test/test-async-directory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/test-async-directory.c b/test/test-async-directory.c
+index 2698d8e..9c24aa6 100644
+--- a/test/test-async-directory.c
++++ b/test/test-async-directory.c
+@@ -233,7 +233,7 @@ main (int argc, char **argv)
+ 	GOptionContext *ctx = NULL;
+ 	GError *error = NULL;
+ 
+-	g_printf("Initializing gnome-libs...");
++	g_print("Initializing gnome-libs...");
+ 
+ 	ctx = g_option_context_new("test-vfs");
+ 	g_option_context_add_main_entries(ctx, options, NULL);
+-- 
+2.53.0
+

@@ -2,32 +2,33 @@
   description = "GNOME2 revived";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
   };
 
   outputs =
     { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        config = {
+          permittedInsecurePackages = [
+            "python-2.7.18.8" # Needed cuz my bestie scrollkeeper can't cope with py3 yet
+            "python-2.7.18.12"
+            "libsoup-2.74.3" # We should patch this (me)
+          ];
+        };
+        inherit system;
+      };
       callPackage = pkgs.callPackage;
-      gnome2 = pkgs.gnome2;
-      libX11 = pkgs.xorg.libX11;
-      libXmu = pkgs.xorg.libXmu;
-      ORBit2 = gnome2.ORBit2;
-#      GConf = gnome2.GConf;
-      libIDL = gnome2.libIDL;
-      libart_lgpl = gnome2.libart_lgpl;
-      libglade = gnome2.libglade;
-      libbonobo = gnome2.libbonobo;
-      gnome_vfs = gnome2.gnome_vfs;
-      libgnomecanvas = gnome2.libgnomecanvas;
-      gtkglext = gnome2.gtkglext;
-      gnome_mime_data = gnome2.gnome_mime_data;
-      gnome-common = gnome2.gnome-common;
-      xdg-user-dirs = pkgs.xdg-user-dirs;
-      isOld = pkgs.lib.versionOlder pkgs.lib.version "25.11";
-      libsoup = if pkgs.lib.hasAttr "libsoup_2_4" pkgs then pkgs.libsoup_2_4 else pkgs.libsoup;
+
+      # Our shite below
+
+      #      GConf = pkgs.gnome2.GConf; # for using official GConf pkg
+      gnome-common = pkgs.gnome2.gnome-common;
+      # This was renamed in 25.11? or 25.05 whatever the fuck
+      gnome-icon-theme = if pkgs.lib.hasAttr "gnome-icon-theme" pkgs then pkgs.gnome-icon-theme else pkgs.gnome2.gnome-icon-theme;
+      gnome_mime_data = pkgs.gnome2.gnome_mime_data;
+      # For some reason the official package doesn't seem to fix this bin? maybe no one uses it...
       gtk2 = pkgs.gtk2.overrideAttrs (old: {
         postInstall = (old.postInstall or "") + ''
           chmod +x $dev/bin/gtk-builder-convert
@@ -35,47 +36,39 @@
             --replace "/usr/bin/env python" "${pkgs.python3}/bin/python"
         '';
       });
+      gtkglext = pkgs.gnome2.gtkglext;
+      libart_lgpl = pkgs.gnome2.libart_lgpl;
+      libglade = pkgs.gnome2.libglade;
+      libgnomecanvas = pkgs.gnome2.libgnomecanvas;
+      libIDL = pkgs.gnome2.libIDL;
+      # This was renamed in 24.11
+      libsoup = if pkgs.lib.hasAttr "libsoup_2_4" pkgs then pkgs.libsoup_2_4 else pkgs.libsoup;
+      libX11 = pkgs.xorg.libX11;
+      libXmu = pkgs.xorg.libXmu;
+      ORBit2 = pkgs.gnome2.ORBit2;
+      xdg-user-dirs = pkgs.xdg-user-dirs;
     in
     {
       packages.${system} = rec {
+        # I wrote pkgs for these b4 I knew they existed already sooooo, ill keep them here
         #        ORBit2 = callPackage ./platform/ORBit2 { inherit libIDL; };
-        metacity = callPackage ./platform/metacity {
-          inherit GConf;
-          inherit zenity;
-        };
         #        libIDL = callPackage ./platform/libIDL { };
-        libgweather = callPackage ./platform/libgweather {
-          inherit GConf;
-          inherit libsoup;
-        };
-        gnome-desktop = callPackage ./platform/gnome-desktop {
-          inherit GConf;
-          inherit scrollkeeper;
-        };
         #        libart_lgpl = callPackage ./platform/libart_lgpl { };
         #        libglade = callPackage ./platform/libglade { };
-        libgnomekbd = callPackage ./platform/libgnomekbd {
-          inherit gnome-common;
-          inherit GConf;
-        };
-        gnome-panel = callPackage ./platform/gnome-panel {
-          inherit GConf;
-          inherit gnome-menus;
-          inherit gnome-desktop;
-          inherit libgweather;
-          inherit scrollkeeper;
-        };
-        GConf = callPackage ./platform/GConf { inherit ORBit2; };
         #        libgnomecanvas = callPackage ./platform/libgnomecanvas {
         #          inherit libart_lgpl;
         #          inherit libglade;
         #        };
         #        gnome-common = callPackage platform/gnome-common { };
-        gnome-settings-daemon = callPackage platform/gnome-settings-daemon {
-          inherit libgnomekbd;
-          inherit GConf;
-          inherit gnome-desktop;
-        };
+        #        gnome_mime_data = callPackage ./platform/gnome-mime-data { };
+        #        gtkglext = callPackage ./platform/gtkglext {
+        #          inherit libX11;
+        #          inherit libXmu;
+        #        };
+        #        libgnome-keyring = callPackage ./platform/libgnome-keyring { };
+
+        GConf = callPackage ./platform/GConf { inherit ORBit2; };
+
         gnome-control-center = callPackage platform/gnome-control-center {
           inherit libgnomekbd;
           inherit gnome-desktop;
@@ -84,90 +77,156 @@
           inherit metacity;
           inherit gnome-settings-daemon;
           inherit scrollkeeper;
+          inherit gnome-doc-utils;
         };
+
+        gnome-desktop = callPackage ./platform/gnome-desktop {
+          inherit GConf;
+          inherit gnome-doc-utils;
+          inherit scrollkeeper;
+        };
+
+        gnome-doc-utils = callPackage ./platform/gnome-doc-utils {
+          inherit libxml2-2_9;
+          inherit scrollkeeper;
+        };
+
+        gnome-keyring = callPackage ./platform/gnome-keyring { };
+
         gnome-menus = callPackage platform/gnome-menus { };
-        #        gnome_mime_data = callPackage ./platform/gnome-mime-data { };
-        #        gtkglext = callPackage ./platform/gtkglext {
-        #          inherit libX11;
-        #          inherit libXmu;
-        #        };
-        zenity = callPackage ./platform/zenity { };
-        libgnome = callPackage ./platform/libgnome {
-          inherit gnome_vfs;
-          inherit libbonobo;
+
+        gnome-panel = callPackage ./platform/gnome-panel {
+          inherit GConf;
+          inherit gnome-menus;
+          inherit gnome-desktop;
+          inherit libgweather;
+          inherit scrollkeeper;
+          inherit gnome-doc-utils;
         };
-        gnome-doc-utils = callPackage ./platform/gnome-doc-utils { inherit scrollkeeper; };
-        vte = callPackage ./platform/vte { };
-        nautilus = callPackage ./platform/nautilus {
+
+        gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
+
+        gnome-settings-daemon = callPackage platform/gnome-settings-daemon {
+          inherit libgnomekbd;
           inherit GConf;
           inherit gnome-desktop;
         };
-        gnome-session = callPackage ./platform/gnome-session { inherit GConf; };
-        scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
-        libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
-        #        libgnome-keyring = callPackage ./platform/libgnome-keyring { };
-        gnome-keyring = callPackage ./platform/gnome-keyring { };
-        gnome-themes = callPackage ./platform/gnome-themes { };
+
         gnome-terminal = callPackage ./platform/gnome-terminal {
           inherit vte;
           inherit GConf;
           inherit gnome-common;
           inherit gtk2;
           inherit scrollkeeper;
+          inherit gnome-doc-utils;
         };
+
+        gnome-themes = callPackage ./platform/gnome-themes { };
+
+        gnome_vfs = callPackage ./platform/gnome-vfs {
+          inherit GConf;
+          inherit gnome_mime_data;
+        };
+
+        libbonobo = callPackage ./platform/libbonobo { inherit ORBit2; };
+
+        libgnome = callPackage ./platform/libgnome {
+          inherit gnome_vfs;
+          inherit libbonobo;
+        };
+
+        libgnomekbd = callPackage ./platform/libgnomekbd {
+          inherit gnome-common;
+          inherit GConf;
+        };
+
+        libgweather = callPackage ./platform/libgweather {
+          inherit GConf;
+          inherit libsoup;
+        };
+
+        libxml2-2_9 = callPackage ./platform/libxml2-2.9 { };
+
+        metacity = callPackage ./platform/metacity {
+          inherit GConf;
+          inherit zenity;
+        };
+
+        nautilus = callPackage ./platform/nautilus {
+          inherit GConf;
+          inherit gnome-desktop;
+        };
+
+        scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
+
+        vte = callPackage ./platform/vte { };
+
+        zenity = callPackage ./platform/zenity {
+          inherit gnome-doc-utils;
+        };
+
         default = pkgs.buildEnv rec {
           name = "gnome2-bootstrap";
           paths = [
+            GConf
+            ORBit2
+            gnome-common
+            gnome-control-center
+            gnome-desktop
+            gnome-icon-theme
+            gnome-keyring
+            gnome-menus
+            gnome-panel
+            gnome-session
+            gnome-settings-daemon
+            gnome-themes
+            gnome-terminal
+            gnome_mime_data
+            gtk2.out
+            gtkglext
+            pkgs.hicolor-icon-theme
+            libIDL
             libart_lgpl
             libglade
-            ORBit2
-            libIDL
-            libgweather
-            GConf
-            libgnomecanvas
-            gnome-common
-            gnome-menus
-            gnome-session
-            gnome_mime_data
-            gnome2.gnome-icon-theme
-            gtkglext
-            metacity
-            zenity
-            vte
-            gnome-terminal
-            scrollkeeper
-            gnome-desktop
-            gnome-panel
-            gnome-control-center
-            gnome-settings-daemon
-            gnome-keyring
-            gnome-themes
             libgnome
-            gtk2.out
-            xdg-user-dirs
+            libgnomecanvas
+            libgweather
+            metacity
             nautilus
-            pkgs.hicolor-icon-theme
+            scrollkeeper
+            vte
+            xdg-user-dirs
+            zenity
           ];
         };
       };
       nixosConfigurations.gnomevm = nixpkgs.lib.nixosSystem {
         system = system;
 
-        specialArgs = { self = self; };
+        specialArgs = {
+          self = self;
+        };
 
         modules = [
+          # This is where gnome-session config lives
           ./modules/session.nix
+          # Since we are using this flake as the sys config
+          # and by we I mean me :sob: need 2 include the
+          # actual sys config
           /etc/nixos/configuration.nix
 
           (
             { pkgs, ... }:
             {
+              # We exist as a flake..
               nix.settings.experimental-features = [
                 "nix-command"
                 "flakes"
               ];
 
-services.xserver.desktopManager.gnome2.enable = true;
+              # This is from modules/session.nix
+              # it enables gnome2 selection in your display manager
+              services.xserver.desktopManager.pkgs.gnome2.enable = true;
 
               environment.systemPackages = [
                 self.packages.${system}.default
@@ -176,42 +235,44 @@ services.xserver.desktopManager.gnome2.enable = true;
               services.xserver.enable = true;
               services.xserver.displayManager.startx.enable = true;
 
-environment.etc."gconf/2/path".text = ''
-include "$(USERCONFDIR)/gconf/path"
-include "$(HOME)/.gconf.path"
-xml:readwrite:/var/lib/gconf
-xml:readonly:/etc/gconf/gconf.xml.system
-include /etc/gconf/2/local-defaults.path
-xml:readonly:/etc/gconf/gconf.xml.defaults
-'';
+              environment.etc."gconf/2/path".text = ''
+                include "$(USERCONFDIR)/gconf/path"
+                include "$(HOME)/.gconf.path"
+                xml:readwrite:/var/lib/gconf
+                xml:readonly:/etc/gconf/gconf.xml.system
+                include /etc/gconf/2/local-defaults.path
+                xml:readonly:/etc/gconf/gconf.xml.defaults
+              '';
               systemd.tmpfiles.rules = [
                 "d /var/lib/gconf 0755 root root -"
               ];
               environment.etc."gconf/schemas".source = "${self.packages.${system}.default}/etc/gconf/schemas";
 
               system.activationScripts.gconfSchemas.text = ''
-                export GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
-#                export GCONF_SCHEMA_INSTALL_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
-                mkdir -p /etc/gconf/gconf.xml.defaults
+                                export GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
+                #                export GCONF_SCHEMA_INSTALL_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults
+                                mkdir -p /etc/gconf/gconf.xml.defaults
 
-                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
-                  echo "Installing GConf schema $s"
-                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                    --makefile-install-rule "$s"
-                done
-                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.entries; do
-                  echo "Installing GConf default entries $s"
-                  if [ $s = "${self.packages.${system}.default}/etc/gconf/schemas/panel-default-setup.entries" ]; then
-                    echo "Encountered gnome-panel defaults!"
-                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
-                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
-                  else
-                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
-                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
-                  fi
-                done
+                                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.schemas; do
+                                  echo "Installing GConf schema $s"
+                                  ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                                    --makefile-install-rule "$s"
+                                done
+                                for s in ${self.packages.${system}.default}/etc/gconf/schemas/*.entries; do
+                                  echo "Installing GConf default entries $s"
+                                  if [ $s = "${
+                                    self.packages.${system}.default
+                                  }/etc/gconf/schemas/panel-default-setup.entries" ]; then
+                                    echo "Encountered gnome-panel defaults!"
+                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s" /apps/panel
+                                  else
+                                    ${self.packages.${system}.GConf}/bin/gconftool-2 \
+                                      --config-source=xml:merged:/etc/gconf/gconf.xml.defaults --direct --load "$s"
+                                  fi
+                                done
               '';
             }
           )
