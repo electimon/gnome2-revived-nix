@@ -173,7 +173,12 @@
           buildInputs = (old.buildInputs or []) ++ [
             gtk2
           ];
+          postPatch = (old.postPatch or "") + ''
+            substituteInPlace gui/interface.c \
+              --replace 'MPLAYER_DATADIR "/skins"' '"/usr/share/mplayer/skins"'
+          '';
         });
+        mplayer-skins = callPackage ./desktop/mplayer-skins { };
 
         default = pkgs.buildEnv rec {
           name = "gnome2-bootstrap";
@@ -214,6 +219,7 @@
           name = "extra-apps";
           paths = [
             mplayer
+            mplayer-skins
           ];
         };
       };
