@@ -18,7 +18,7 @@ in
 
     services.xserver.desktopManager.session = [
       {
-        name = "Gnome 2 (r)";
+        name = "gnome2";
         bgSupport = true;
         start = ''
           # Set GTK_PATH so that GTK+ can find the theme engines.

@@ -2,7 +2,7 @@
   description = "GNOME2 revived";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
   outputs =
@@ -12,6 +12,7 @@
       pkgs = import nixpkgs {
         config = {
           permittedInsecurePackages = [
+            "python-2.7.18.7"
             "python-2.7.18.8" # Needed cuz my bestie scrollkeeper can't cope with py3 yet
             "python-2.7.18.12"
             "libsoup-2.74.3" # We should patch this (me)
