@@ -1,17 +1,16 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
   python2,
-  pkg-config,
   libxslt,
-  intltool,
   libxml2-2_9,
   scrollkeeper,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-doc-utils";
   version = "0.20.2";
 
@@ -26,10 +25,8 @@ stdenv.mkDerivation rec {
   ];
   nativeBuildInputs = [
     python2
-    pkg-config
     libxml2-2_9
     libxslt
-    intltool
     scrollkeeper
   ];
 

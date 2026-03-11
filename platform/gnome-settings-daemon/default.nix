@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
-  pkg-config,
   dbus-glib,
   glib,
   gtk2,
@@ -15,7 +14,7 @@
   libSM,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-settings-daemon";
   version = "2.32.0";
 
@@ -35,8 +34,6 @@ stdenv.mkDerivation rec {
     libSM
   ];
   nativeBuildInputs = [
-    intltool
-    pkg-config
     dbus-glib
     glib
     gtk2

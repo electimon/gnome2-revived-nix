@@ -1,16 +1,15 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   gtk2,
-  intltool,
   libart_lgpl,
   libglade,
   glib,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libgnomecanvas";
   version = "2.30.3";
 
@@ -28,8 +27,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libglade ];
   nativeBuildInputs = [
-    pkg-config
-    intltool
     glib
   ];
   propagatedBuildInputs = [

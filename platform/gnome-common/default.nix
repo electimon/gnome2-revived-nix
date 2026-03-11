@@ -1,11 +1,12 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-common";
   version = "2.34.0";
 

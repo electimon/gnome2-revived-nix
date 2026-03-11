@@ -1,17 +1,16 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
   glib,
-  pkg-config,
   gtk2,
   libgcrypt,
   libtasn1,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-keyring";
   version = "2.32.1";
 
@@ -27,8 +26,6 @@ stdenv.mkDerivation rec {
     libtasn1
   ];
   nativeBuildInputs = [
-    pkg-config
-    intltool
     gtk2
     libgcrypt
     libtasn1

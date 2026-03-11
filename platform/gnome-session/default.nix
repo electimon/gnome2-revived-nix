@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchgit,
   which,
-  intltool,
-  pkg-config,
   glib,
   gtk2,
   upower,
@@ -13,7 +12,7 @@
   GConf,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-session";
   version = "2.32.1";
 
@@ -33,8 +32,6 @@ stdenv.mkDerivation rec {
     GConf
   ]; # autogen.sh which is using gnome-common tends to require which
   nativeBuildInputs = [
-    intltool
-    pkg-config
     upower
   ];
 

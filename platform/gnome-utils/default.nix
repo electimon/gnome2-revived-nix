@@ -1,9 +1,8 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  intltool,
-  pkg-config,
   glib,
   gtk2,
   GConf,
@@ -13,10 +12,10 @@
   libcanberra-gtk2,
   scrollkeeper,
   gnome-doc-utils,
-  libSM
+  libSM,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-utils";
   version = "2.32.0";
 
@@ -25,8 +24,20 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-AzpVz0QglrKOpikgQzVP6v4ADR5fTruWKpttcuuak/o=";
   };
 
-  buildInputs = [ glib gtk2 GConf gnome-panel libbonoboui libgtop libcanberra-gtk2 libSM ];
-  nativeBuildInputs = [ intltool pkg-config scrollkeeper gnome-doc-utils ];
+  buildInputs = [
+    glib
+    gtk2
+    GConf
+    gnome-panel
+    libbonoboui
+    libgtop
+    libcanberra-gtk2
+    libSM
+  ];
+  nativeBuildInputs = [
+    scrollkeeper
+    gnome-doc-utils
+  ];
   NIX_CFLAGS_COMPILE = [ "-Wno-implicit-function-declaration" ]; # TODO fix this
   postPatch = ''
     substituteInPlace baobab/src/baobab.h \

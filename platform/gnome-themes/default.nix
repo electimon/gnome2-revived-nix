@@ -1,16 +1,15 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
-  pkg-config,
   gtk_engines,
   gtk2,
   iconnamingutils,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-themes";
   version = "2.32.1";
 
@@ -24,8 +23,6 @@ stdenv.mkDerivation rec {
     gtk2
   ];
   nativeBuildInputs = [
-    pkg-config
-    intltool
     gtk2
     iconnamingutils
   ];

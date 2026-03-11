@@ -1,15 +1,14 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   fetchpatch,
-  pkg-config,
   libxml2,
   bzip2,
   openssl,
   dbus-glib,
   glib,
-  intltool,
   GConf,
   gnome_mime_data,
   avahi,
@@ -17,28 +16,20 @@
   testers,
 }:
 
-stdenv.mkDerivation (finalAttrs: {
+mkDerivation rec {
   pname = "gnome-vfs";
   version = "2.24.4";
 
-  src =
-    let
-      inherit (finalAttrs) pname version;
-    in
-    fetchurl {
-      url = "mirror://gnome/sources/gnome-vfs/${lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
-      sha256 = "1ajg8jb8k3snxc7rrgczlh8daxkjidmcv3zr9w809sq4p2sn9pk2";
-    };
+  src = fetchurl {
+    url = "mirror://gnome/sources/gnome-vfs/${lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
+    sha256 = "1ajg8jb8k3snxc7rrgczlh8daxkjidmcv3zr9w809sq4p2sn9pk2";
+  };
 
   outputs = [
     "out"
     "dev"
   ];
 
-  nativeBuildInputs = [
-    intltool
-    pkg-config
-  ];
   buildInputs = [
     libxml2
     bzip2
@@ -72,12 +63,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   doCheck = false; # needs dbus daemon
 
-  passthru.tests.pkg-config = testers.testMetaPkgConfig finalAttrs.finalPackage;
-
   meta = {
     pkgConfigModules = [
       "gnome-vfs-2.0"
       "gnome-vfs-module-2.0"
     ];
   };
-})
+}

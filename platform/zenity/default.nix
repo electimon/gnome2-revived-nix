@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
-  pkg-config,
   glib,
   gtk2,
   libcanberra-gtk2,
@@ -14,7 +13,7 @@
   libxslt,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "zenity";
   version = "2.32.1";
 
@@ -26,8 +25,6 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
 
   nativeBuildInputs = [
-    intltool
-    pkg-config
     glib
     gtk2
     libcanberra-gtk2

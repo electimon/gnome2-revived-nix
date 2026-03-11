@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchFromGitLab,
   pkg-config,
   gtk-doc,
@@ -18,7 +19,7 @@
   libX11,
 }:
 
-stdenv.mkDerivation {
+mkDerivation {
   pname = "gtkglext";
   version = "unstable-2019-12-19";
 

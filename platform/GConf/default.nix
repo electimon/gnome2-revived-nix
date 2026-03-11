@@ -1,19 +1,18 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   dbus-glib,
   glib,
   ORBit2,
   libxml2,
   polkit,
   python312,
-  intltool,
   gtk2,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gconf";
   version = "2.32.0";
 
@@ -45,8 +44,6 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [
-    pkg-config
-    intltool
     python312
     glib
   ];

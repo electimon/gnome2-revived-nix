@@ -1,10 +1,11 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libart_lgpl";
   version = "2.3.21";
   src = fetchurl {

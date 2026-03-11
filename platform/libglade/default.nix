@@ -1,14 +1,14 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   gtk2,
   libxml2,
   gettext,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libglade";
   version = "2.6.4";
 
@@ -24,10 +24,6 @@ stdenv.mkDerivation rec {
 
   strictDeps = true;
 
-  nativeBuildInputs = [
-    pkg-config
-    gettext
-  ];
   buildInputs = [ gtk2 ];
   propagatedBuildInputs = [ libxml2 ];
 

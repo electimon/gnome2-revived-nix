@@ -1,17 +1,16 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
-  pkg-config,
   gnome_vfs,
   libcanberra,
   libbonobo,
   glib,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libgnome";
   version = "2.32.1";
 
@@ -27,8 +26,6 @@ stdenv.mkDerivation rec {
     libbonobo
   ];
   nativeBuildInputs = [
-    intltool
-    pkg-config
     gnome_vfs
     libcanberra
     glib

@@ -1,16 +1,16 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
   libxslt,
   docbook_xml_dtd_412,
   docbook-xsl-nons,
   libxml2-2_9,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "scrollkeeper";
   version = "0.3.14";
 
@@ -21,7 +21,6 @@ stdenv.mkDerivation rec {
   configureFlags = [ "--with-xml-catalog=${docbook_xml_dtd_412}/xml/dtd/docbook/catalog.xml" ];
   propagatedBuildInputs = [
     which
-    intltool
     libxml2-2_9
     libxslt
   ]; # autogen.sh which is using gnome-common tends to require which

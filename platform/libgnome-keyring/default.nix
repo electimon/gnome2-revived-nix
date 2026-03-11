@@ -1,11 +1,12 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libgnome-keyring";
   version = "2.32.0";
 

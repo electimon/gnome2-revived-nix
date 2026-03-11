@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   gnome-common,
-  intltool,
   gtk2,
   #  libxml2,
   glib,
@@ -12,7 +11,7 @@
   GConf,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libgnomekbd";
   version = "2.32.0";
 
@@ -28,9 +27,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [
-    pkg-config
     gnome-common
-    intltool
     glib
     gtk2
     libxklavier

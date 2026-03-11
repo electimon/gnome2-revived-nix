@@ -1,11 +1,10 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
   python2,
-  pkg-config,
   libSM,
   libICE,
   gtk2,
@@ -25,7 +24,7 @@
   scrollkeeper,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-panel";
   version = "2.32.1";
 
@@ -53,9 +52,7 @@ stdenv.mkDerivation rec {
     libbonobo
   ];
   nativeBuildInputs = [
-    intltool
     python2
-    pkg-config
     libSM
     libICE
     gtk2
@@ -78,7 +75,7 @@ stdenv.mkDerivation rec {
 
   patches = [ ./0001-every-little-thought-is-a-different-sound-compile-fi.patch ];
 
-  NIX_CFLAGS_COMPILE = [ 
+  NIX_CFLAGS_COMPILE = [
     "-I${GConf}/include/gconf/2" # fucking bonobo build path isnt including this path even though all the other makefiles do, i need 2 patch this but i cba rn
     "-Wno-implicit-function-declaration" # how fucking broken is this shit?? panel-applets-bonobo-module.c:32:9: error: implicit declaration of function 'panel_applets_manager_bonobo_register'; did you mean 'panel_applets_manager_bonobo_get_type'?
     # HELLO??

@@ -1,11 +1,10 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
   gnome-doc-utils,
-  pkg-config,
-  intltool,
   libxml2,
   libxslt,
   gtk2,
@@ -23,7 +22,7 @@
   desktop-file-utils,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-control-center";
   version = "2.32.0";
 
@@ -49,8 +48,6 @@ stdenv.mkDerivation rec {
   ];
   nativeBuildInputs = [
     gnome-doc-utils
-    pkg-config
-    intltool
     gtk2
     glib
     libxml2

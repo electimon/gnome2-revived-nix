@@ -1,15 +1,15 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   glib,
   libintl,
   libIDL,
   buildPackages,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "ORBit2";
   version = "2.14.19";
 
@@ -27,7 +27,6 @@ stdenv.mkDerivation rec {
   # output does not contain binaries for build
   depsBuildBuild = [ buildPackages.stdenv.cc ];
   nativeBuildInputs = [
-    pkg-config
     libintl
   ];
   propagatedBuildInputs = [

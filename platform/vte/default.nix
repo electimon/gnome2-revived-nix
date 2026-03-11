@@ -1,17 +1,16 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchgit,
   which,
-  intltool,
   glib,
   gtk2,
-  pkg-config,
   ncurses,
   python3,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "vte";
   version = "0.26.2";
 
@@ -22,8 +21,6 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [
     which
-    intltool
-    pkg-config
     glib
     gtk2
     ncurses

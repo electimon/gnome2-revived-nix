@@ -1,19 +1,18 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
-  pkg-config,
   libbonobo,
   gtk2,
   GConf,
   libgnome,
   libgnomecanvas,
-  intltool,
   libxml2,
-  libglade
+  libglade,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libbonoboui";
   version = "2.24.5";
 
@@ -25,10 +24,13 @@ stdenv.mkDerivation rec {
   buildInputs = [
     gtk2
   ];
-  nativeBuildInputs = [
-    pkg-config
-    intltool
+  propagatedBuildInputs = [
+    libgnomecanvas
+    libgnome
+    libbonobo
+    libglade
+    libxml2
+    GConf
   ];
-  propagatedBuildInputs = [ libgnomecanvas libgnome libbonobo libglade libxml2 GConf ];
   NIX_CFLAGS_COMPILE = [ "-Wno-incompatible-pointer-types" ]; # todo remove this
 }

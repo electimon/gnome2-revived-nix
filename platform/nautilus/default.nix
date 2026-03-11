@@ -1,7 +1,7 @@
 {
   stdenv,
   fetchurl,
-  pkg-config,
+  mkDerivation,
   libxml2,
   dbus-glib,
   shared-mime-info,
@@ -9,12 +9,11 @@
   gtk2,
   gnome-desktop,
   libunique,
-  intltool,
   GConf,
   libSM,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "nautilus";
   version = "2.32.1";
 
@@ -23,7 +22,6 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-PXKRaC7Qzf6V9fr4AQRSjwr/smMwAH8I3XpB1+IbA0k=";
   };
   buildInputs = [
-    pkg-config
     libxml2
     dbus-glib
     shared-mime-info
@@ -31,7 +29,6 @@ stdenv.mkDerivation rec {
     gtk2
     gnome-desktop
     libunique
-    intltool
     GConf
     libSM
   ];

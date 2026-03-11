@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
-  pkg-config,
   gtk2,
   libxml2,
   libsoup,
@@ -12,7 +11,7 @@
   tzdata,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libgweather";
   version = "2.30.3";
 
@@ -30,8 +29,6 @@ stdenv.mkDerivation rec {
     tzdata
   ];
   nativeBuildInputs = [
-    intltool
-    pkg-config
     gtk2
     libxml2
     libsoup

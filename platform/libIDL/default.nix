@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   flex,
   bison,
@@ -9,7 +10,7 @@
   gettext,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libIDL";
   version = "0.8.14";
 

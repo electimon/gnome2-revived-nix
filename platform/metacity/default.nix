@@ -1,10 +1,9 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchgit,
   which,
-  intltool,
-  pkg-config,
   glib,
   gtk2,
   libcanberra-gtk2,
@@ -14,7 +13,7 @@
   gnome-doc-utils,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "metacity";
   version = "2.30.3";
 
@@ -26,8 +25,6 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
 
   nativeBuildInputs = [
-    intltool
-    pkg-config
     glib
     gtk2
     libcanberra-gtk2

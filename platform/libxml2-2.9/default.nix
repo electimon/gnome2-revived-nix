@@ -1,11 +1,12 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   python2,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libxml2-2.9";
   version = "2.9.14";
 

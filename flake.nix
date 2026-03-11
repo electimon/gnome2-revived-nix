@@ -20,7 +20,28 @@
         };
         inherit system;
       };
-      callPackage = pkgs.callPackage;
+
+      mkDerivation =
+        args:
+        pkgs.stdenv.mkDerivation (
+          args
+          // {
+            nativeBuildInputs = (args.nativeBuildInputs or [ ]) ++ [
+              pkgs.pkg-config
+              pkgs.intltool
+            ];
+          }
+        );
+
+      callPackage =
+        pkgPath: args:
+        pkgs.callPackage pkgPath (
+          args
+          // {
+            stdenv = pkgs.stdenv;
+            mkDerivation = mkDerivation;
+          }
+        );
 
       # Our shite below
 

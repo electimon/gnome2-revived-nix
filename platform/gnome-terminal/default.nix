@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchgit,
   which,
   vte,
@@ -17,7 +18,7 @@
   scrollkeeper,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-terminal";
   version = "2.32.1";
 

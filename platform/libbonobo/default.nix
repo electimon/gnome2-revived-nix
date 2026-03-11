@@ -1,19 +1,18 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   flex,
   bison,
-  pkg-config,
   glib,
   libxml2,
   popt,
-  intltool,
   ORBit2,
   procps,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "libbonoboui";
   version = "2.32.1";
 
@@ -33,8 +32,6 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     flex
     bison
-    pkg-config
-    intltool
     procps
   ];
   buildInputs = [ libxml2 ];

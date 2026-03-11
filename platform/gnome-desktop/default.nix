@@ -1,11 +1,10 @@
 {
   lib,
   stdenv,
+  mkDerivation,
   fetchurl,
   which,
-  intltool,
   libX11,
-  pkg-config,
   glib,
   gtk2,
   GConf,
@@ -15,7 +14,7 @@
   scrollkeeper,
 }:
 
-stdenv.mkDerivation rec {
+mkDerivation rec {
   pname = "gnome-desktop";
   version = "2.32.1";
 
@@ -33,9 +32,7 @@ stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-desktop tends to require which
   nativeBuildInputs = [
-    intltool
     libX11
-    pkg-config
     gtk2
     glib
     GConf
