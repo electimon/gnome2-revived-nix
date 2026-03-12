@@ -187,6 +187,8 @@
           inherit gnome_mime_data;
         };
 
+        gtk2-engines = callPackage ./platform/gtk2-engines { };
+
         libbonoboui = callPackage ./platform/libbonoboui {
           inherit GConf;
           inherit libgnome;
@@ -266,6 +268,7 @@
             gnome-terminal
             gnome-utils
             gtk2.out
+            gtk2-engines
             gtkglext
             pkgs.hicolor-icon-theme
             libIDL
@@ -372,7 +375,6 @@
 
               # I forgot why i need this
               environment.pathsToLink = [ "/share" ];
-
             }
           )
         ];
