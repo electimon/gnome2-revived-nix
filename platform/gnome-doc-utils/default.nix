@@ -27,7 +27,6 @@ mkDerivation rec {
     python2
     libxml2-2_9
     libxslt
-    scrollkeeper
   ];
 
   # This package has xml2po in it, so anyone using it implictly needs
@@ -35,5 +34,7 @@ mkDerivation rec {
   propagatedBuildInputs = [
     python2
     libxml2-2_9
+    libxslt # using scrollkeeper needs this
+    scrollkeeper
   ];
 }

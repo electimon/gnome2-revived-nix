@@ -33,13 +33,11 @@ mkDerivation rec {
     sha256 = "sha256-j3go63ohyBenO2l4RKTiAlYFmzI4ZBShD5fVHn2fyl8";
   };
 
-  NIX_LDFLAGS = "-lgmodule-2.0 -lm ";
   buildInputs = [
     libSM
     libICE
     gtk2
     dbus-glib
-    GConf
     gnome-menus
     libcanberra-gtk2
     gnome-desktop
@@ -48,7 +46,6 @@ mkDerivation rec {
     libgweather
     libxml2
     libxslt
-    libbonoboui
     libbonobo
   ];
   nativeBuildInputs = [
@@ -69,7 +66,7 @@ mkDerivation rec {
     libxslt
     scrollkeeper
   ];
-  propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
+  propagatedBuildInputs = [ GConf libbonoboui ];
 
   configureFlags = [ "--enable-bonobo" ];
 
@@ -80,4 +77,5 @@ mkDerivation rec {
     "-Wno-implicit-function-declaration" # how fucking broken is this shit?? panel-applets-bonobo-module.c:32:9: error: implicit declaration of function 'panel_applets_manager_bonobo_register'; did you mean 'panel_applets_manager_bonobo_get_type'?
     # HELLO??
   ];
+  NIX_LDFLAGS = "-lgmodule-2.0 -lm";
 }

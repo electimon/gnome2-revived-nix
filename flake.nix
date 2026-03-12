@@ -123,6 +123,8 @@
               done
             '';
 
+        gnome-applets = callPackage platform/gnome-applets { inherit gnome-icon-theme; inherit gnome-panel; inherit gnome-desktop; inherit gnome-settings-daemon; inherit gnome-doc-utils; inherit libgweather; };
+
         gnome-control-center = callPackage platform/gnome-control-center {
           inherit libgnomekbd;
           inherit gnome-desktop;
@@ -137,7 +139,6 @@
         gnome-desktop = callPackage ./platform/gnome-desktop {
           inherit GConf;
           inherit gnome-doc-utils;
-          inherit scrollkeeper;
         };
 
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils {
@@ -180,9 +181,7 @@
         gnome-themes = callPackage ./platform/gnome-themes { };
 
         gnome-utils = callPackage ./platform/gnome-utils {
-          inherit GConf;
           inherit gnome-panel; # tell me why im including the ENTIRE gnome-panel TODO fix this to use dev output or sm shit
-          inherit libbonoboui;
           inherit gnome-doc-utils; # TODO, make including this include scrollkeeper
           inherit scrollkeeper;
         };
@@ -256,6 +255,7 @@
           paths = [
             GConf
             ORBit2
+            gnome-applets
             gnome-common
             gnome-control-center
             gnome-desktop

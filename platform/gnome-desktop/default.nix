@@ -11,7 +11,6 @@
   python2,
   gnome-doc-utils,
   libxml2,
-  scrollkeeper,
 }:
 
 mkDerivation rec {
@@ -39,7 +38,6 @@ mkDerivation rec {
     python2
     gnome-doc-utils
     libxml2
-    scrollkeeper
   ];
 
   patches = [

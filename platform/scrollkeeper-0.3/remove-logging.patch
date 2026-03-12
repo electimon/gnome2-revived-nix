@@ -1,0 +1,136 @@
+diff -Naru scrollkeeper-0.3.14/libs/error.c scrollkeeper-0.3.14-new/libs/error.c
+--- scrollkeeper-0.3.14/libs/error.c	2002-04-08 06:24:26.000000000 +0000
++++ scrollkeeper-0.3.14-new/libs/error.c	2026-03-12 00:22:36.160524412 +0000
+@@ -60,50 +60,6 @@
+     if (verbose)
+         vfprintf(stderr, format, ap);
+     va_end(ap);
+-
+-    /*
+-     * Open log file, and rotate if necessary.
+-     */
+-    if (stat(SCROLLKEEPERLOGFILE, &buf) == -1) {
+-    	if (errno == ENOENT) {
+-	    fid = fopen(SCROLLKEEPERLOGFILE, "w");
+-	    if (fid == NULL) {
+-                printf("Cannot create log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	        return;
+-            }
+-	}
+-	else {
+-            printf("Error accessing log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	    return;
+-	}
+-    }
+-    else {
+-        if (buf.st_size < (1<<24)) {
+-	    fid = fopen(SCROLLKEEPERLOGFILE, "a");
+-	    if (fid == NULL) {
+-                printf("Cannot write to log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	        return;
+-            }
+-	}
+-	else {	/* Rotate log file */
+-	    rename(SCROLLKEEPERLOGFILE, SCROLLKEEPERLOGFILE_ROT);
+-	    fid = fopen(SCROLLKEEPERLOGFILE, "w");
+-	    if (fid == NULL) {
+-                printf("Cannot create log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	        return;
+-            }
+-	}
+-    }
+-    
+-    /* Write message to log file */
+-    time (&current_time);
+-    tm = localtime (&current_time);
+-    strftime (datestamp, sizeof (datestamp), "%b %d %X", tm);
+-    va_start(ap, format);
+-    fprintf(fid,"%s %s :", datestamp, funct_name);
+-    vfprintf(fid, format, ap);
+-    va_end(ap);
+-    fclose(fid);
+ }
+ 
+ void
+@@ -194,55 +150,6 @@
+         vfprintf(stderr, format, ap);
+         va_end(ap);
+     }
+-
+-    /*
+-     * Write to log file if do_log_message is set.
+-     */
+-    if (do_log_message) {
+-        /*
+-         * Open log file, and rotate if necessary.
+-         */
+-        if (stat(SCROLLKEEPERLOGFILE, &buf) == -1) {
+-            if (errno == ENOENT) {
+-                fid = fopen(SCROLLKEEPERLOGFILE, "w");
+-                if (fid == NULL) {
+-                    printf("Cannot create log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	            return;
+-                }
+-	    }
+-	    else {
+-                printf("Error accessing log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	        return;
+-	    }
+-        }
+-        else {
+-            if (buf.st_size < (1<<24)) {
+-	        fid = fopen(SCROLLKEEPERLOGFILE, "a");
+-	        if (fid == NULL) {
+-                    printf("Cannot write to log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	            return;
+-                }
+-	    }
+-	    else {	/* Rotate log file */
+-	        rename(SCROLLKEEPERLOGFILE, SCROLLKEEPERLOGFILE_ROT);
+-	        fid = fopen(SCROLLKEEPERLOGFILE, "w");
+-	        if (fid == NULL) {
+-                    printf("Cannot create log file: %s : %s\n", SCROLLKEEPERLOGFILE, strerror(errno));
+-	            return;
+-                }
+-	    }
+-        }
+-    
+-        /* Write message to log file */
+-        time (&current_time);
+-        tm = localtime (&current_time);
+-        strftime (datestamp, sizeof (datestamp), "%b %d %X", tm);
+-        va_start(ap, format);
+-        fprintf(fid,"%s %s: ", datestamp, funct_name);
+-        vfprintf(fid, format, ap);
+-        va_end(ap);
+-        fclose(fid);
+-    }
+ }
+ 
+ 
+diff -Naru scrollkeeper-0.3.14/scripts/scrollkeeper-rebuilddb.in scrollkeeper-0.3.14-new/scripts/scrollkeeper-rebuilddb.in
+--- scrollkeeper-0.3.14/scripts/scrollkeeper-rebuilddb.in	2002-04-17 01:28:26.000000000 +0000
++++ scrollkeeper-0.3.14-new/scripts/scrollkeeper-rebuilddb.in	2026-03-12 00:21:43.049835290 +0000
+@@ -31,22 +31,11 @@
+ 
+ datestring=`date +"%b %d %X"`
+ if [ -z "$scrollkeeper_db_dir" ]; then 
+-    echo "$datestring scrollkeeper-rebuilddb: Empty database path returned from scrollkeeper-config." >> @localstatedir@/log/scrollkeeper.log
+-    echo "$datestring scrollkeeper-rebuilddb: Cannot rebuild ScrollKeeper database." >> @localstatedir@/log/scrollkeeper.log
+-    if [ ! $quiet ] || [ $quiet != "-q" ]; then
+-        echo "scrollkeeper-rebuilddb: Empty database path returned from scrollkeeper-config."
+-        echo "scrollkeeper-rebuilddb: Cannot rebuild ScrollKeeper database."
+-    fi
+     exit 1; 
+ else
+     rm -rf $scrollkeeper_db_dir
+ fi
+ 
+-echo "$datestring scrollkeeper-rebuilddb: Rebuilding ScrollKeeper database..." >> @localstatedir@/log/scrollkeeper.log
+-
+ scrollkeeper-update $quiet $verbose -p $scrollkeeper_db_dir
+ 
+-datestring=`date +"%b %d %X"`
+-echo "$datestring scrollkeeper-rebuilddb: Done rebuilding ScrollKeeper database." >> @localstatedir@/log/scrollkeeper.log
+-
+ exit 0

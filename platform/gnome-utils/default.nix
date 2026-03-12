@@ -5,9 +5,7 @@
   fetchurl,
   glib,
   gtk2,
-  GConf,
   gnome-panel,
-  libbonoboui,
   libgtop,
   libcanberra-gtk2,
   scrollkeeper,
@@ -27,9 +25,7 @@ mkDerivation rec {
   buildInputs = [
     glib
     gtk2
-    GConf
     gnome-panel
-    libbonoboui
     libgtop
     libcanberra-gtk2
     libSM
