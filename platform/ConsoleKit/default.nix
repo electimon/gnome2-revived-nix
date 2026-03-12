@@ -5,7 +5,8 @@
   fetchurl,
   which,
   dbus-glib,
-  libX11
+  libX11,
+  pam
 }:
 
 mkDerivation rec {
@@ -19,6 +20,6 @@ mkDerivation rec {
   patches = [
     ./consolekit-pointer.patch
   ];
-  buildInputs = [ dbus-glib libX11 ];
-  configureFlags = [ "--with-systemdsystemunitdir=${placeholder "out"}/lib/systemd/system" ];
+  buildInputs = [ dbus-glib libX11 pam ];
+  configureFlags = [ "--with-systemdsystemunitdir=${placeholder "out"}/lib/systemd/system" "--enable-pam-module" "--with-pam-module-dir=${placeholder "out"}/lib/security" ];
 }
