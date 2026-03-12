@@ -33,7 +33,7 @@ in
           # Set TMPDIR for gconf-sanity-check-2
           export TMPDIR=/tmp
 
-          exec ${pkgs.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
+          exec ${self.packages.${system}.ConsoleKit}/bin/ck-launch-session ${pkgs.dbus}/bin/dbus-run-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
         '';
       }
     ];
