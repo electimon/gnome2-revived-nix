@@ -8,20 +8,29 @@
   libX11,
   pam,
   systemd,
-  polkit
+  polkit,
+  autoconf,
+  automake,
+  libtool
 }:
 
 mkDerivation rec {
-  pname = "ConsoleKit";
-  version = "0.4.6";
+  pname = "ConsoleKit2";
+  version = "1.2.6";
 
   src = fetchurl {
-    url = "https://www.freedesktop.org/software/ConsoleKit/dist/ConsoleKit-0.4.6.tar.xz";
-    sha256 = "sha256-tB0X4G+ABZWJ++7+lq0HvMVkxJ5lUW2hyvl1FGR1Vlw=";
+    url = "https://github.com/ConsoleKit2/ConsoleKit2/archive/refs/tags/1.2.6.tar.gz";
+    sha256 = "sha256-1BIkEpxaaJRp69j+h+NMSnav23svYgHrJGMgJi6lqUI=";
   };
-  patches = [
-    ./consolekit-pointer.patch
-  ];
+#  patches = [
+#    ./consolekit-pointer.patch
+#    (fetchurl {
+#      url = "https://github.com/ConsoleKit2/ConsoleKit2/commit/8031482966a20dc80c5a87e4642a24e15cdd8e81.patch";
+#      sha256 = "sha256-vyfi+7MPnmnV/RCs6HdqF92sp+gSIikpKUt5IUxlfwo=";
+#    })
+#  ];
+  postPatch = '' ./autogen.sh '';
   buildInputs = [ dbus-glib libX11 pam systemd polkit ];
+  nativeBuildInputs = [ autoconf automake libtool ];
   configureFlags = [ "--with-systemdsystemunitdir=${placeholder "out"}/lib/systemd/system" "--enable-pam-module" "--with-pam-module-dir=${placeholder "out"}/lib/security" ];
 }
