@@ -20,5 +20,5 @@ mkDerivation rec {
     ./consolekit-pointer.patch
   ];
   buildInputs = [ dbus-glib libX11 ];
-  configureFlags = [ "--with-systemdsystemunitdir=$out/lib/systemd/system" ];
+  configureFlags = [ "--with-systemdsystemunitdir=${placeholder "out"}/etc/systemd/system" ];
 }
