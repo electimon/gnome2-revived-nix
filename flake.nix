@@ -375,6 +375,9 @@
               # Im praying this works
               security.polkit.enable = true;
 
+              # Feed on you, survive off you....
+              systemd.packages = [ self.packages.${system}.ConsoleKit ];
+
               xdg.mime.enable = true;
               xdg.icons.enable = true;
 
