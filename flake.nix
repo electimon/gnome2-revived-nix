@@ -364,7 +364,7 @@
               # We should change this to gdm soon
               services.xserver.displayManager.lightdm.enable = true;
               # Gnome has trouble with libinput
-              services.xserver.libinput.enable = false;
+              services.libinput.enable = false;
 
               # Configure keymap in X11
               services.xserver.xkb.layout = "us";
