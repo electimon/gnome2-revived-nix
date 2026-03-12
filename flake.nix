@@ -378,10 +378,10 @@
               security.polkit.enable = true;
 
               # Feed on you, survive off you....
-              systemd.packages = [ self.packages.${system}.ConsoleKit ];
-              services.dbus.packages = [ self.packages.${system}.ConsoleKit ]; # RAAAAAAAAAAAAAAa
+              systemd.packages = [ self.packages.${system}.ConsoleKit2 ];
+              services.dbus.packages = [ self.packages.${system}.ConsoleKit2 ]; # RAAAAAAAAAAAAAAa
               security.pam.services.lightdm.text = ''
-                session optional ${self.packages.${system}.ConsoleKit}/lib/security/pam_ck_connector.so
+                session optional ${self.packages.${system}.ConsoleKit2}/lib/security/pam_ck_connector.so
               '';
 
               xdg.mime.enable = true;
