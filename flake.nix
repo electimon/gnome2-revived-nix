@@ -316,6 +316,7 @@
 
         specialArgs = {
           self = self;
+          system = system;
         };
 
         modules = [
