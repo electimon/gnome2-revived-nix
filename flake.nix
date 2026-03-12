@@ -132,7 +132,6 @@
           inherit gnome-menus;
           inherit metacity;
           inherit gnome-settings-daemon;
-          inherit scrollkeeper;
           inherit gnome-doc-utils;
         };
 
@@ -155,7 +154,6 @@
           inherit gnome-menus;
           inherit gnome-desktop;
           inherit libgweather;
-          inherit scrollkeeper;
           inherit gnome-doc-utils;
           inherit libbonobo;
           inherit libbonoboui;
@@ -174,7 +172,6 @@
           inherit GConf;
           inherit gnome-common;
           inherit gtk2;
-          inherit scrollkeeper;
           inherit gnome-doc-utils;
         };
 
@@ -182,8 +179,7 @@
 
         gnome-utils = callPackage ./platform/gnome-utils {
           inherit gnome-panel; # tell me why im including the ENTIRE gnome-panel TODO fix this to use dev output or sm shit
-          inherit gnome-doc-utils; # TODO, make including this include scrollkeeper
-          inherit scrollkeeper;
+          inherit gnome-doc-utils;
         };
 
         gnome_vfs = callPackage ./platform/gnome-vfs {

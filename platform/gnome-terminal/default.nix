@@ -15,7 +15,6 @@
   gtk2,
   libxslt,
   libxml2,
-  scrollkeeper,
 }:
 
 mkDerivation rec {
@@ -45,6 +44,5 @@ mkDerivation rec {
     libtool
     libxslt
     libxml2
-    scrollkeeper
   ]; # autogen.sh which is using gnome-common tends to require which
 }

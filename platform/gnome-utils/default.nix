@@ -8,7 +8,6 @@
   gnome-panel,
   libgtop,
   libcanberra-gtk2,
-  scrollkeeper,
   gnome-doc-utils,
   libSM,
 }:
@@ -31,7 +30,6 @@ mkDerivation rec {
     libSM
   ];
   nativeBuildInputs = [
-    scrollkeeper
     gnome-doc-utils
   ];
   NIX_CFLAGS_COMPILE = [ "-Wno-implicit-function-declaration" ]; # TODO fix this

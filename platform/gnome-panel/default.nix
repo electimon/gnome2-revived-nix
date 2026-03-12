@@ -21,7 +21,6 @@
   libxslt,
   libbonobo,
   libbonoboui,
-  scrollkeeper,
 }:
 
 mkDerivation rec {
@@ -64,7 +63,6 @@ mkDerivation rec {
     gnome-doc-utils
     libxml2
     libxslt
-    scrollkeeper
   ];
   propagatedBuildInputs = [ GConf libbonoboui ];
 

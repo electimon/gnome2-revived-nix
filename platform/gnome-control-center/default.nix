@@ -18,7 +18,6 @@
   libxklavier,
   libgnomekbd,
   libSM,
-  scrollkeeper,
   desktop-file-utils,
 }:
 
@@ -61,7 +60,6 @@ mkDerivation rec {
     libxklavier
     libgnomekbd
     libSM
-    scrollkeeper
     desktop-file-utils
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-control-center tends to require which
