@@ -276,7 +276,6 @@
             libgweather
             metacity
             nautilus
-            scrollkeeper
             vte
             xdg-user-dirs
             zenity
