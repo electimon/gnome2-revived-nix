@@ -94,7 +94,7 @@
         #        libgnome-keyring = callPackage ./platform/libgnome-keyring { };
 
         # Consider moving outside of this flake..
-        ConsoleKit = callPackage ./platform/ConsoleKit { };
+        ConsoleKit2 = callPackage ./platform/ConsoleKit2 { };
 
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
 
@@ -254,7 +254,7 @@
         gnome-base = pkgs.buildEnv {
           name = "gnome2-base";
           paths = [
-            ConsoleKit
+            ConsoleKit2
             GConf
             ORBit2
             gnome-applets
