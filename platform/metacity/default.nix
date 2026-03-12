@@ -2,7 +2,7 @@
   lib,
   stdenv,
   mkDerivation,
-  fetchgit,
+  fetchurl,
   which,
   glib,
   gtk2,
@@ -15,11 +15,11 @@
 
 mkDerivation rec {
   pname = "metacity";
-  version = "2.30.3";
+  version = "2.35";
 
-  src = fetchgit {
-    url = "https://daedalus.yzuinfra.moe/gnome2-revived/metacity-2.30.3.git";
-    sha256 = "sha256-mX9gkusObLNngTYa+mL9eXKgMG/eGel9bVriDIjkko4=";
+  src = fetchurl {
+    url = "https://github.com/electimon/metacity/releases/download/2.35/metacity-2.34.21.tar.gz";
+    sha256 = "sha256-9dzSSvJkQOMcs0zmIWwmMzkF42tMmfEOlACbwzyOHHs=";
   };
 
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
