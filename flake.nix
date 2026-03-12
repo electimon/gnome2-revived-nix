@@ -377,7 +377,7 @@
 
               # Feed on you, survive off you....
               systemd.packages = [ self.packages.${system}.ConsoleKit ];
-              dbus.packages = [ self.packages.${system}.ConsoleKit ]; # RAAAAAAAAAAAAAAa
+              services.dbus.packages = [ self.packages.${system}.ConsoleKit ]; # RAAAAAAAAAAAAAAa
 
               xdg.mime.enable = true;
               xdg.icons.enable = true;
