@@ -6,7 +6,9 @@
   which,
   dbus-glib,
   libX11,
-  pam
+  pam,
+  systemd,
+  polkit
 }:
 
 mkDerivation rec {
@@ -20,6 +22,6 @@ mkDerivation rec {
   patches = [
     ./consolekit-pointer.patch
   ];
-  buildInputs = [ dbus-glib libX11 pam ];
+  buildInputs = [ dbus-glib libX11 pam systemd polkit ];
   configureFlags = [ "--with-systemdsystemunitdir=${placeholder "out"}/lib/systemd/system" "--enable-pam-module" "--with-pam-module-dir=${placeholder "out"}/lib/security" ];
 }
