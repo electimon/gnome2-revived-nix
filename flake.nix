@@ -17,6 +17,7 @@
             "python-2.7.18.12"
             "libsoup-2.74.3" # We should patch this (me)
           ];
+          allowUnfree = true;
         };
         inherit system;
       };
@@ -219,6 +220,8 @@
 
         gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; inherit GConf; };
 
+        gstreamer0_10_plugins_bad = callPackage ./platform/gstreamer-plugins-bad { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
+
         gtksourceview = callPackage ./desktop/gtksourceview { };
 
         gtk2-engines = callPackage ./platform/gtk2-engines { };
@@ -324,6 +327,7 @@
             gstreamer0_10
             gstreamer0_10_plugins_base
             gstreamer0_10_plugins_good
+            gstreamer0_10_plugins_bad
             gtk2.out
             gtk2-engines
             gtkglext
