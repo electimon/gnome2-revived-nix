@@ -224,6 +224,8 @@
 
         gstreamer0_10_plugins_ugly = callPackage ./platform/gstreamer-plugins-ugly { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
 
+        gstreamer0_10_ffmpeg = callPackage ./platform/gstreamer-ffmpeg { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
+
         gtksourceview = callPackage ./desktop/gtksourceview { };
 
         gtk2-engines = callPackage ./platform/gtk2-engines { };
@@ -331,6 +333,7 @@
             gstreamer0_10_plugins_good
             gstreamer0_10_plugins_bad
             gstreamer0_10_plugins_ugly
+            gstreamer0_10_ffmpeg
             gtk2.out
             gtk2-engines
             gtkglext
