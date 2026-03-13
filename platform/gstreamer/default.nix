@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     rm -rf $out/share/gtk-doc
   '';
 
-  setupHook = ./setup-hook.sh;
+  setupHook = [ ./setup-hook.sh ];
 
   patches = [ ./fix-bison.patch ];
 
