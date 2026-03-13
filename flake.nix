@@ -477,6 +477,8 @@
               services.xserver.updateDbusEnvironment = true;
               # Im praying this works
               security.polkit.enable = true;
+              # meow gvfs for smb shares
+              services.gvfs.enable = true;
 
               # Feed on you, survive off you....
               systemd.packages = [ self.packages.${system}.ConsoleKit2 ];

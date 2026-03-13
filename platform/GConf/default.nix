@@ -72,4 +72,8 @@ mkDerivation rec {
     ./0001-liar-dancer-fix-missing-GTK_DIALOG-cast.patch
     ./ok.patch
   ];
+
+  postFixup = ''
+    rm -f $out/lib/gio/modules/giomodule.cache
+  '';
 }
