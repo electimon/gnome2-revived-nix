@@ -268,12 +268,15 @@
           pathsToLink = [ "/share/thumbnailers" ];
         };
 
+        totem-pl-parser = callPackage ./platform/totem-pl-parser { inherit libsoup; };
+
         totem = callPackage ./platform/totem {
           inherit gstreamer0_10;
           inherit gstreamer0_10_plugins_base;
           inherit gstreamer0_10_plugins_good;
           inherit gnome-doc-utils;
           inherit GConf;
+          inherit totem-pl-parser;
         };
 
         vte = callPackage ./platform/vte { };
@@ -333,6 +336,7 @@
             libgweather
             metacity
             nautilus
+            totem
             vte
             xdg-user-dirs
             zenity
