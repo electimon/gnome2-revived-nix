@@ -479,6 +479,7 @@
               security.polkit.enable = true;
               # meow gvfs for smb shares
               services.gvfs.enable = true;
+              networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
 
               # Feed on you, survive off you....
               systemd.packages = [ self.packages.${system}.ConsoleKit2 ];
