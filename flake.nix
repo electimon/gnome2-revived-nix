@@ -262,6 +262,12 @@
 
         scrollkeeper = callPackage ./platform/scrollkeeper-0.3 { inherit libxml2-2_9; };
 
+        thumbnailers = pkgs.buildEnv {
+          name = "thumbnailers";
+          paths = [ gnome-base pkgs.gdk-pixbuf pkgs.librsvg pkgs.libjxl pkgs.libavif ];
+          pathsToLink = [ "/share/thumbnailers" ];
+        };
+
         vte = callPackage ./platform/vte { };
 
         zenity = callPackage ./platform/zenity {
@@ -330,6 +336,7 @@
           paths = [
             gnome-base
             gconf-defaults
+            thumbnailers
           ];
         };
 
