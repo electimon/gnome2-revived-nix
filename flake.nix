@@ -406,6 +406,12 @@
 
               # I forgot why i need this
               environment.pathsToLink = [ "/share" ];
+
+              # GSTreamer
+              environment.sessionVariables = {
+                GST_PLUGIN_SYSTEM_PATH = "/run/current-system/sw/lib/gstreamer-0.10";
+                GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-0.10";
+              };
             }
           )
         ];
