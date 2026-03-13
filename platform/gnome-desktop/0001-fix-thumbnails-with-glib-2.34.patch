@@ -1,0 +1,128 @@
+From 2e1ea9809c840ae3014d121e6981888511d740f4 Mon Sep 17 00:00:00 2001
+From: Stefano Karapetsas <stefano@karapetsas.com>
+Date: Fri, 2 Nov 2012 11:24:01 +0100
+Subject: [PATCH] fix thumbnails with glib >= 2.34
+
+---
+ libgnome-desktop/gnome-desktop-thumbnail.c | 43 ++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 4 deletions(-)
+
+diff --git a/libgnome-desktop/gnome-desktop-thumbnail.c b/libgnome-desktop/gnome-desktop-thumbnail.c
+index 9660307f..c9c137f3 100644
+--- a/libgnome-desktop/gnome-desktop-thumbnail.c
++++ b/libgnome-desktop/gnome-desktop-thumbnail.c
+@@ -525,9 +525,14 @@ gnome_desktop_thumbnail_factory_lookup (GnomeDesktopThumbnailFactory *factory,
+   g_assert (digest_len == 16);
+ 
+   file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+-  
++
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  path = g_build_filename (g_get_user_cache_dir (),
++			   "thumbnails",
++#else
+   path = g_build_filename (g_get_home_dir (),
+ 			   ".thumbnails",
++#endif
+ 			   (priv->size == GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL)?"normal":"large",
+ 			   file,
+ 			   NULL);
+@@ -587,8 +592,13 @@ gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail (GnomeDesktopThumbnai
+ 
+   file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  path = g_build_filename (g_get_user_cache_dir (),
++			   "thumbnails/fail",
++#else
+   path = g_build_filename (g_get_home_dir (),
+ 			   ".thumbnails/fail",
++#endif
+ 			   appname,
+ 			   file,
+ 			   NULL);
+@@ -917,12 +927,17 @@ make_thumbnail_dirs (GnomeDesktopThumbnailFactory *factory)
+ 
+   res = FALSE;
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  thumbnail_dir = g_build_filename (g_get_user_cache_dir (),
++				    "thumbnails",
++#else
+   thumbnail_dir = g_build_filename (g_get_home_dir (),
+ 				    ".thumbnails",
++#endif
+ 				    NULL);
+   if (!g_file_test (thumbnail_dir, G_FILE_TEST_IS_DIR))
+     {
+-      g_mkdir (thumbnail_dir, 0700);
++      g_mkdir_with_parents (thumbnail_dir, 0700);
+       res = TRUE;
+     }
+ 
+@@ -951,12 +966,17 @@ make_thumbnail_fail_dirs (GnomeDesktopThumbnailFactory *factory)
+ 
+   res = FALSE;
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  thumbnail_dir = g_build_filename (g_get_user_cache_dir (),
++				    "thumbnails",
++#else
+   thumbnail_dir = g_build_filename (g_get_home_dir (),
+ 				    ".thumbnails",
++#endif
+ 				    NULL);
+   if (!g_file_test (thumbnail_dir, G_FILE_TEST_IS_DIR))
+     {
+-      g_mkdir (thumbnail_dir, 0700);
++      g_mkdir_with_parents (thumbnail_dir, 0700);
+       res = TRUE;
+     }
+ 
+@@ -1025,8 +1045,13 @@ gnome_desktop_thumbnail_factory_save_thumbnail (GnomeDesktopThumbnailFactory *fa
+ 
+   file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  path = g_build_filename (g_get_user_cache_dir (),
++			   "thumbnails",
++#else
+   path = g_build_filename (g_get_home_dir (),
+ 			   ".thumbnails",
++#endif
+ 			   (priv->size == GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL)?"normal":"large",
+ 			   file,
+ 			   NULL);
+@@ -1129,8 +1154,13 @@ gnome_desktop_thumbnail_factory_create_failed_thumbnail (GnomeDesktopThumbnailFa
+ 
+   file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  path = g_build_filename (g_get_user_cache_dir (),
++			   "thumbnails/fail",
++#else
+   path = g_build_filename (g_get_home_dir (),
+ 			   ".thumbnails/fail",
++#endif
+ 			   appname,
+ 			   file,
+ 			   NULL);
+@@ -1220,9 +1250,14 @@ gnome_desktop_thumbnail_path_for_uri (const char         *uri,
+   md5 = gnome_desktop_thumbnail_md5 (uri);
+   file = g_strconcat (md5, ".png", NULL);
+   g_free (md5);
+-  
++
++#if GLIB_CHECK_VERSION (2, 34, 0)
++  path = g_build_filename (g_get_user_cache_dir (),
++			   "thumbnails",
++#else
+   path = g_build_filename (g_get_home_dir (),
+ 			   ".thumbnails",
++#endif
+ 			   (size == GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL)?"normal":"large",
+ 			   file,
+ 			   NULL);
+-- 
+2.51.2
+

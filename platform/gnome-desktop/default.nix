@@ -42,5 +42,6 @@ mkDerivation rec {
 
   patches = [
     ./0001-1440-compile-fix.patch
+    ./0001-fix-thumbnails-with-glib-2.34.patch
   ];
 }
