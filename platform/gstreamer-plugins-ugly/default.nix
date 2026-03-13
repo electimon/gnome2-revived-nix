@@ -16,7 +16,8 @@
   libmpeg2,
   x264,
   twolame,
-  libdvdread
+  libdvdread,
+  a52dec
 }:
 
 stdenv.mkDerivation rec {
@@ -53,6 +54,7 @@ stdenv.mkDerivation rec {
     x264
     twolame
     libdvdread
+    a52dec
   ];
 
   propagatedBuildInputs = [ gstreamer0_10 ];

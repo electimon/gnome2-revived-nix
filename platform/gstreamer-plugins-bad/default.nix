@@ -17,6 +17,7 @@
   libcdaudio,
   libass,
   libdvdnav,
+  libdvdread,
   vo-aacenc,
   openal,
   librsvg,
@@ -64,6 +65,7 @@ stdenv.mkDerivation rec {
     libcdaudio
     libass
     libdvdnav
+    libdvdread
     vo-aacenc
     openal
     librsvg
