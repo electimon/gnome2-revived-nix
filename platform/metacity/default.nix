@@ -15,11 +15,11 @@
 
 mkDerivation rec {
   pname = "metacity";
-  version = "2.31";
+  version = "2.36";
 
   src = fetchurl {
-    url = "https://github.com/electimon/metacity/releases/download/2.35.1/metacity-v2.30.5.tar.gz";
-    sha256 = "sha256-XVi3Vva5eKzjZnNL6MST7RtLuabhwxpSEppBx5PYSX4=";
+    url = "https://github.com/electimon/metacity/releases/download/2.36/metacity-2.30.5.tar.gz";
+    sha256 = "7cdb194d0836bb17c8801aa039a1cd517d7b145e8f175e2b6ef7dfc9673c00bc";
   };
 
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
