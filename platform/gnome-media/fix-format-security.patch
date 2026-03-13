@@ -1,0 +1,66 @@
+--- gnome-media-2.32.0/profiles/audio-profile-edit.c	2010-08-04 13:09:53.000000000 +0000
++++ gnome-media-2.32.0-new/profiles/audio-profile-edit.c	2026-03-13 05:36:34.135847485 +0000
+@@ -230,7 +230,7 @@
+   /* get the dialog */
+   builder = gmp_util_load_builder_file ("gnome-audio-profile-edit.ui", NULL, &error);
+   if (error != NULL) {
+-    g_warning (error->message);
++    g_warning ("%s", error->message);
+     g_error_free (error);
+     return NULL;
+   }
+--- gnome-media-2.32.0/profiles/audio-profiles-edit.c	2010-09-28 14:46:17.000000000 +0000
++++ gnome-media-2.32.0-new/profiles/audio-profiles-edit.c	2026-03-13 05:36:26.130772887 +0000
+@@ -915,7 +915,7 @@
+     builder = gmp_util_load_builder_file ("gnome-audio-profile-new.ui", transient_parent, &error);
+ 
+     if (error != NULL) {
+-      g_warning (error->message);
++      g_warning ("%s", error->message);
+       g_error_free (error);
+       return;
+     }
+--- gnome-media-2.32.0/profiles/gmp-util.c	2010-08-06 11:01:35.000000000 +0000
++++ gnome-media-2.32.0-new/profiles/gmp-util.c	2026-03-13 05:36:45.009602910 +0000
+@@ -47,7 +47,7 @@
+     goto end;
+ 
+   if (error != NULL) {
+-    g_warning (error->message);
++    g_warning ("%s", error->message);
+     g_error_free (error);
+     error = NULL;
+   }
+--- gnome-media-2.32.0/gst-mixer/src/preferences.c	2010-08-04 13:22:32.000000000 +0000
++++ gnome-media-2.32.0-new/gst-mixer/src/preferences.c	2026-03-13 06:06:29.620949275 +0000
+@@ -190,7 +190,7 @@
+ 
+   /* element */
+   prefs = g_object_new (GNOME_VOLUME_CONTROL_TYPE_PREFERENCES, NULL);
+-  prefs->client = g_object_ref (G_OBJECT (client));
++  prefs->client = (GConfClient*)g_object_ref (G_OBJECT (client));
+ 
+   gnome_volume_control_preferences_change (prefs, element);
+ 
+--- gnome-media-2.32.0/gst-mixer/src/element.c	2009-09-07 13:20:13.000000000 +0000
++++ gnome-media-2.32.0-new/gst-mixer/src/element.c	2026-03-13 06:06:39.710048478 +0000
+@@ -70,7 +70,7 @@
+ 
+   /* element */
+   el = g_object_new (GNOME_VOLUME_CONTROL_TYPE_ELEMENT, NULL);
+-  el->client = g_object_ref (G_OBJECT (client));
++  el->client = (GConfClient*)g_object_ref (G_OBJECT (client));
+ 
+   gconf_client_add_dir (el->client, GNOME_VOLUME_CONTROL_KEY_DIR,
+ 			GCONF_CLIENT_PRELOAD_RECURSIVE, NULL);
+--- gnome-media-2.32.0/gst-mixer/src/volume.c	2010-08-04 13:22:32.000000000 +0000
++++ gnome-media-2.32.0-new/gst-mixer/src/volume.c	2026-03-13 06:06:54.747043441 +0000
+@@ -177,7 +177,7 @@
+   vol = g_object_new (GNOME_VOLUME_CONTROL_TYPE_VOLUME, NULL);
+   gst_object_ref (GST_OBJECT (mixer));
+   vol->mixer = mixer;
+-  vol->track = g_object_ref (G_OBJECT (track));
++  vol->track = (GstMixerTrack*)g_object_ref (G_OBJECT (track));
+   if (padding >= 0)
+     vol->padding = padding;
+ 

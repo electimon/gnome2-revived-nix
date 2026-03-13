@@ -150,6 +150,13 @@
 
         gnome-keyring = callPackage ./platform/gnome-keyring { };
 
+        gnome-media = callPackage platform/gnome-media {
+          inherit GConf;
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+          inherit gnome-doc-utils;
+        };
+
         gnome-menus = callPackage platform/gnome-menus { };
 
         gnome-panel = callPackage ./platform/gnome-panel {
@@ -189,6 +196,10 @@
           inherit GConf;
           inherit gnome_mime_data;
         };
+
+        gstreamer0_10 = callPackage ./platform/gstreamer { };
+
+        gstreamer0_10_plugins_base = callPackage ./platform/gstreamer-plugins-base { inherit gstreamer0_10; inherit gnome_vfs; };
 
         gtk2-engines = callPackage ./platform/gtk2-engines { };
 
@@ -263,6 +274,7 @@
             gnome-desktop
             gnome-icon-theme
             gnome-keyring
+            gnome-media
             gnome-menus
             gnome_mime_data
             gnome-panel

@@ -1,0 +1,9 @@
+--- gst-plugins-base-0.10.36/ext/alsa/gstalsamixer.c	2011-12-30 13:29:12.000000000 +0000
++++ gst-plugins-base-0.10.36-new/ext/alsa/gstalsamixer.c	2026-03-13 05:51:05.567865300 +0000
+@@ -958,5 +958,5 @@
+   g_return_if_fail (mixer != NULL && mixer->interface == NULL);
+   g_return_if_fail (interface != NULL);
+ 
+-  mixer->interface = g_object_ref (G_OBJECT (interface));
++  mixer->interface = (GstMixer*)g_object_ref (G_OBJECT (interface));
+ }
