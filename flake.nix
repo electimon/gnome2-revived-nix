@@ -318,7 +318,7 @@
         mplayer =
           (pkgs.mplayer.override {
             x11Support = true;
-            libdvdnav = pkgs.libdvdnav_4_2_1;
+            libdvdnav = pkgs.libdvdnav;
           }).overrideAttrs
             (old: {
               configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-gui" ];
