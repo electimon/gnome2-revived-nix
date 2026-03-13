@@ -201,6 +201,8 @@
 
         gstreamer0_10_plugins_base = callPackage ./platform/gstreamer-plugins-base { inherit gstreamer0_10; inherit gnome_vfs; };
 
+        gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; };
+
         gtk2-engines = callPackage ./platform/gtk2-engines { };
 
         libbonoboui = callPackage ./platform/libbonoboui {
@@ -283,6 +285,9 @@
             gnome-themes
             gnome-terminal
             gnome-utils
+            gstreamer0_10
+            gstreamer0_10_plugins_base
+            gstreamer0_10_plugins_good
             gtk2.out
             gtk2-engines
             gtkglext
