@@ -496,6 +496,10 @@
                 GST_PLUGIN_SYSTEM_PATH = "/run/current-system/sw/lib/gstreamer-0.10";
                 GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-0.10";
               };
+
+              services.udev.extraRules = ''
+                SUBSYSTEM=="block", ENV{ID_CDROM}=="1", SYMLINK+="dvd"
+              '';
             }
           )
         ];
