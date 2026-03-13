@@ -15,7 +15,8 @@
   libcdio,
   libmpeg2,
   x264,
-  twolame
+  twolame,
+  libdvdread
 }:
 
 stdenv.mkDerivation rec {
@@ -30,8 +31,8 @@ stdenv.mkDerivation rec {
   };
 
   postPatch = ''
-    find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
-#    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
+        find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
+    #    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
   '';
 
   patches = [ ./cdio-cd-text-api.patch ];
@@ -51,6 +52,7 @@ stdenv.mkDerivation rec {
     libmpeg2
     x264
     twolame
+    libdvdread
   ];
 
   propagatedBuildInputs = [ gstreamer0_10 ];

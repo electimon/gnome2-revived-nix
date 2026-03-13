@@ -20,7 +20,7 @@
   vo-aacenc,
   openal,
   librsvg,
-  xvidcore
+  xvidcore,
 }:
 
 stdenv.mkDerivation rec {
@@ -41,8 +41,8 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch = ''
-    find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
-#    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
+        find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
+    #    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
   '';
 
   configureFlags = [

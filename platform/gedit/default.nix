@@ -11,7 +11,7 @@
   GConf,
   gtksourceview,
   libSM,
-  gnome-doc-utils
+  gnome-doc-utils,
 }:
 
 mkDerivation rec {
@@ -23,7 +23,15 @@ mkDerivation rec {
     sha256 = "a561fe3dd1d199baede1bd07c4ee65f06fc7c494dd4d3327117f04149a608e3c";
   };
 
-  buildInputs = [ python2 glib gtk2 libxml2 GConf gtksourceview libSM ];
+  buildInputs = [
+    python2
+    glib
+    gtk2
+    libxml2
+    GConf
+    gtksourceview
+    libSM
+  ];
   nativeBuildInputs = [ gnome-doc-utils ];
 
   configureFlags = [ "--disable-spell" ];
@@ -31,5 +39,5 @@ mkDerivation rec {
   NIX_LDFLAGS = "-lgmodule-2.0 -lICE";
   NIX_CFLAGS_COMPILE = "-Wno-incompatible-pointer-types -Wno-implicit-function-declaration"; # todo remove
 
-  postPatch = '' sed -i "s/g_printf/g_print/g" tests/smart-converter.c '';
+  postPatch = ''sed -i "s/g_printf/g_print/g" tests/smart-converter.c '';
 }

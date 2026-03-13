@@ -1,4 +1,8 @@
-{ pkgs, stdenv, mkDerivation }:
+{
+  pkgs,
+  stdenv,
+  mkDerivation,
+}:
 
 pkgs.stdenv.mkDerivation {
   pname = "mplayer-skins";

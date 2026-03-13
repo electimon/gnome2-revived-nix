@@ -12,7 +12,7 @@
   libintl,
   mkDerivation,
   ffmpeg,
-  yasm
+  yasm,
 }:
 
 stdenv.mkDerivation rec {
@@ -27,12 +27,15 @@ stdenv.mkDerivation rec {
   };
 
   postPatch = ''
-    find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
-    find . -type f -print0 | xargs -0 sed -i 's/ORC_TARGET_ALTIVEC_ALTIVEC/ORC_TARGET_POWERPC_ALTIVEC/g'
-#    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
+        find . -name Makefile.in -exec sed -i 's/\\#include/#include/g' {} +
+        find . -type f -print0 | xargs -0 sed -i 's/ORC_TARGET_ALTIVEC_ALTIVEC/ORC_TARGET_POWERPC_ALTIVEC/g'
+    #    find . -name *.mak -exec sed -i 's/\\#include/#include/g' {} +
   '';
 
-  patches = [ ./gst-ffmpeg-0.10.13-gcc-4.7-1.patch ./fix-mathops.patch ];
+  patches = [
+    ./gst-ffmpeg-0.10.13-gcc-4.7-1.patch
+    ./fix-mathops.patch
+  ];
 
   buildInputs = [
     pkg-config
@@ -50,5 +53,8 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  NIX_CFLAGS_COMPILE = [ "-Wno-incompatible-pointer-types" "-Wno-error=format-security" ];
+  NIX_CFLAGS_COMPILE = [
+    "-Wno-incompatible-pointer-types"
+    "-Wno-error=format-security"
+  ];
 }

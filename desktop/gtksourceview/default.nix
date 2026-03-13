@@ -18,7 +18,7 @@
   gettext,
   gtk-mac-integration-gtk2,
   testers,
-  mkDerivation
+  mkDerivation,
 }:
 
 stdenv.mkDerivation (finalAttrs: {

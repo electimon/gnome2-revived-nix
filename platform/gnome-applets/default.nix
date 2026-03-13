@@ -16,7 +16,7 @@
   gnome-doc-utils,
   libgweather,
   gstreamer0_10,
-  gstreamer0_10_plugins_base
+  gstreamer0_10_plugins_base,
 }:
 
 mkDerivation rec {
