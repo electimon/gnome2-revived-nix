@@ -9,7 +9,11 @@
   GConf,
   gstreamer0_10,
   gstreamer0_10_plugins_base,
-  gnome-doc-utils
+  gnome-doc-utils,
+  libglade,
+  pulseaudio,
+  libcanberra-gtk2,
+  libunique
 }:
 
 mkDerivation rec {
@@ -21,6 +25,7 @@ mkDerivation rec {
     sha256 = "sha256-KwrU3s11QGOY9G6CoXDlO8vG4b3DNj8DoHsA9Zwv5eY=";
   };
 
-  buildInputs = [ gtk2 glib GConf gstreamer0_10 gstreamer0_10_plugins_base gnome-doc-utils ];
-  patches = [ ./fix-format-security.patch ];
+  buildInputs = [ gtk2 glib GConf gstreamer0_10 gstreamer0_10_plugins_base libglade pulseaudio libcanberra-gtk2 libunique ];
+  nativeBuildInputs = [ gnome-doc-utils ];
+  patches = [ ./fix-format-security.patch ./fix-math.patch ];
 }

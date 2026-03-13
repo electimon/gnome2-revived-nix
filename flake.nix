@@ -155,6 +155,7 @@
           inherit gstreamer0_10;
           inherit gstreamer0_10_plugins_base;
           inherit gnome-doc-utils;
+          inherit libglade;
         };
 
         gnome-menus = callPackage platform/gnome-menus { };

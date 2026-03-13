@@ -1,0 +1,20 @@
+--- gnome-media-2.32.0/gnome-volume-control/src/gvc-stream-status-icon.c	2010-09-28 14:46:15.000000000 +0000
++++ gnome-media-2.32.0-new/gnome-volume-control/src/gvc-stream-status-icon.c	2026-03-13 07:37:36.848511330 +0000
+@@ -23,6 +23,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <unistd.h>
++#include <math.h>
+ 
+ #include <glib.h>
+ #include <glib/gi18n.h>
+--- gnome-media-2.32.0/gnome-volume-control/src/gvc-mixer-dialog.c	2010-09-28 14:46:15.000000000 +0000
++++ gnome-media-2.32.0-new/gnome-volume-control/src/gvc-mixer-dialog.c	2026-03-13 07:37:50.486080368 +0000
+@@ -23,6 +23,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <unistd.h>
++#include <math.h>
+ 
+ #include <glib.h>
+ #include <glib/gi18n.h>
