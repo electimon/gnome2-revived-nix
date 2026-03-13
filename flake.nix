@@ -126,6 +126,12 @@
               done
             '';
 
+        gedit = callPackage ./platform/gedit {
+          inherit GConf;
+          inherit gtksourceview;
+          inherit gnome-doc-utils;
+        };
+
         gnome-applets = callPackage platform/gnome-applets {
           inherit gnome-icon-theme;
           inherit gnome-panel;
@@ -213,6 +219,8 @@
 
         gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; };
 
+        gtksourceview = callPackage ./desktop/gtksourceview { };
+
         gtk2-engines = callPackage ./platform/gtk2-engines { };
 
         libbonoboui = callPackage ./platform/libbonoboui {
@@ -280,6 +288,7 @@
             ConsoleKit2
             GConf
             ORBit2
+            gedit
             gnome-applets
             gnome-common
             gnome-control-center
