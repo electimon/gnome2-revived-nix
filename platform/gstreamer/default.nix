@@ -1,24 +1,50 @@
-{ fetchurl, stdenv, perl, bison, flex, pkg-config, glib, libxml2, libintl, mkDerivation }:
+{
+  fetchurl,
+  stdenv,
+  perl,
+  bison,
+  flex,
+  pkg-config,
+  glib,
+  libxml2,
+  libintl,
+  mkDerivation,
+}:
 
 stdenv.mkDerivation rec {
   name = "gstreamer-0.10.36";
 
   src = fetchurl {
-    urls =
-      [ "${meta.homepage}/src/gstreamer/${name}.tar.xz"
-        "mirror://gentoo/distfiles/${name}.tar.xz"
-      ];
+    urls = [
+      "${meta.homepage}/src/gstreamer/${name}.tar.xz"
+      "mirror://gentoo/distfiles/${name}.tar.xz"
+    ];
     sha256 = "1nkid1n2l3rrlmq5qrf5yy06grrkwjh3yxl5g0w58w0pih8allci";
   };
 
-  buildInputs = [ perl bison flex pkg-config ];
-  propagatedBuildInputs = [ glib libxml2 libintl ];
+  buildInputs = [
+    perl
+    bison
+    flex
+    pkg-config
+  ];
+  propagatedBuildInputs = [
+    glib
+    libxml2
+    libintl
+  ];
 
   postPatch = ''
     sed -i -e 's/^   /\t/' docs/gst/Makefile.in docs/libs/Makefile.in docs/plugins/Makefile.in
   '';
 
-  configureFlags = [ "--disable-examples" "--enable-failing-tests" "--localstatedir=/var" "--disable-gtk-doc" "--disable-docbook" ];
+  configureFlags = [
+    "--disable-examples"
+    "--enable-failing-tests"
+    "--localstatedir=/var"
+    "--disable-gtk-doc"
+    "--disable-docbook"
+  ];
 
   postInstall = ''
     # Hm, apparently --disable-gtk-doc is ignored...
@@ -30,7 +56,7 @@ stdenv.mkDerivation rec {
   patches = [ ./fix-bison.patch ];
 
   meta = {
-    homepage = http://gstreamer.freedesktop.org;
+    homepage = "http://gstreamer.freedesktop.org";
 
     description = "Library for constructing graphs of media-handling components";
 

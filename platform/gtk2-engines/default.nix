@@ -4,7 +4,7 @@
   mkDerivation,
   fetchurl,
   which,
-  gtk2
+  gtk2,
 }:
 
 mkDerivation rec {

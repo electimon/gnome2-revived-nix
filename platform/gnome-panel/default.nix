@@ -64,7 +64,10 @@ mkDerivation rec {
     libxml2
     libxslt
   ];
-  propagatedBuildInputs = [ GConf libbonoboui ];
+  propagatedBuildInputs = [
+    GConf
+    libbonoboui
+  ];
 
   configureFlags = [ "--enable-bonobo" ];
 

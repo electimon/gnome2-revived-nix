@@ -126,7 +126,16 @@
               done
             '';
 
-        gnome-applets = callPackage platform/gnome-applets { inherit gnome-icon-theme; inherit gnome-panel; inherit gnome-desktop; inherit gnome-settings-daemon; inherit gnome-doc-utils; inherit libgweather; };
+        gnome-applets = callPackage platform/gnome-applets {
+          inherit gnome-icon-theme;
+          inherit gnome-panel;
+          inherit gnome-desktop;
+          inherit gnome-settings-daemon;
+          inherit gnome-doc-utils;
+          inherit libgweather;
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+        };
 
         gnome-control-center = callPackage platform/gnome-control-center {
           inherit libgnomekbd;
