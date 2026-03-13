@@ -216,15 +216,32 @@
 
         gstreamer0_10 = callPackage ./platform/gstreamer { };
 
-        gstreamer0_10_plugins_base = callPackage ./platform/gstreamer-plugins-base { inherit gstreamer0_10; inherit gnome_vfs; };
+        gstreamer0_10_plugins_base = callPackage ./platform/gstreamer-plugins-base {
+          inherit gstreamer0_10;
+          inherit gnome_vfs;
+        };
 
-        gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; inherit GConf; };
+        gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good {
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+          inherit libsoup;
+          inherit GConf;
+        };
 
-        gstreamer0_10_plugins_bad = callPackage ./platform/gstreamer-plugins-bad { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
+        gstreamer0_10_plugins_bad = callPackage ./platform/gstreamer-plugins-bad {
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+        };
 
-        gstreamer0_10_plugins_ugly = callPackage ./platform/gstreamer-plugins-ugly { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
+        gstreamer0_10_plugins_ugly = callPackage ./platform/gstreamer-plugins-ugly {
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+        };
 
-        gstreamer0_10_ffmpeg = callPackage ./platform/gstreamer-ffmpeg { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; };
+        gstreamer0_10_ffmpeg = callPackage ./platform/gstreamer-ffmpeg {
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+        };
 
         gtksourceview = callPackage ./desktop/gtksourceview { };
 
@@ -271,7 +288,13 @@
 
         thumbnailers = pkgs.buildEnv {
           name = "thumbnailers";
-          paths = [ gnome-base pkgs.gdk-pixbuf pkgs.librsvg pkgs.libjxl pkgs.libavif ];
+          paths = [
+            gnome-base
+            pkgs.gdk-pixbuf
+            pkgs.librsvg
+            pkgs.libjxl
+            pkgs.libavif
+          ];
           pathsToLink = [ "/share/thumbnailers" ];
         };
 
@@ -292,18 +315,30 @@
           inherit gnome-doc-utils;
         };
 
-        mplayer = (pkgs.mplayer.override { x11Support = true; }).overrideAttrs (old: {
-          configureFlags = (old.configureFlags or [ ]) ++ [
-            "--enable-gui"
-          ];
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            gtk2
-          ];
-          postPatch = (old.postPatch or "") + ''
-            substituteInPlace gui/interface.c \
-              --replace 'MPLAYER_DATADIR "/skins"' '"/run/current-system/sw/share/mplayer/skins"'
-          '';
-        });
+        mplayer =
+          (pkgs.mplayer.override {
+            x11Support = true;
+            libdvdnav = pkgs.libdvdnav_4_2_1;
+          }).overrideAttrs
+            (old: {
+              configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-gui" ];
+
+              buildInputs = (old.buildInputs or [ ]) ++ [
+                gtk2
+                pkgs.libaacs
+              ];
+
+              postPatch = (old.postPatch or "") + ''
+                substituteInPlace gui/interface.c \
+                  --replace 'MPLAYER_DATADIR "/skins"' '"/run/current-system/sw/share/mplayer/skins"'
+              '';
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+
+              postInstall = (old.postInstall or "") + ''
+                wrapProgram $out/bin/mplayer \
+               --prefix LD_LIBRARY_PATH : ${pkgs.libaacs}/lib
+              '';
+            });
         mplayer-skins = callPackage ./desktop/mplayer-skins { };
 
         gnome-base = pkgs.buildEnv {
