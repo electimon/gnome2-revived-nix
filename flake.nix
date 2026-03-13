@@ -312,6 +312,7 @@
             ConsoleKit2
             GConf
             ORBit2
+            pkgs.ffmpegthumbnailer
             gedit
             gnome-applets
             gnome-common
