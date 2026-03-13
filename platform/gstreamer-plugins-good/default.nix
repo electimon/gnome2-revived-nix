@@ -24,6 +24,7 @@
   bzip2,
   libsoup,
   libintl,
+  GConf,
   mkDerivation,
 }:
 
@@ -59,6 +60,7 @@ stdenv.mkDerivation rec {
     gstreamer0_10_plugins_base
     pulseaudio
     libintl
+    GConf
   ]
   ++ [
     aalib

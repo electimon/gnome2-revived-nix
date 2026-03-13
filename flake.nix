@@ -217,7 +217,7 @@
 
         gstreamer0_10_plugins_base = callPackage ./platform/gstreamer-plugins-base { inherit gstreamer0_10; inherit gnome_vfs; };
 
-        gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; };
+        gstreamer0_10_plugins_good = callPackage ./platform/gstreamer-plugins-good { inherit gstreamer0_10; inherit gstreamer0_10_plugins_base; inherit libsoup; inherit GConf; };
 
         gtksourceview = callPackage ./desktop/gtksourceview { };
 
@@ -266,6 +266,14 @@
           name = "thumbnailers";
           paths = [ gnome-base pkgs.gdk-pixbuf pkgs.librsvg pkgs.libjxl pkgs.libavif ];
           pathsToLink = [ "/share/thumbnailers" ];
+        };
+
+        totem = callPackage ./platform/totem {
+          inherit gstreamer0_10;
+          inherit gstreamer0_10_plugins_base;
+          inherit gstreamer0_10_plugins_good;
+          inherit gnome-doc-utils;
+          inherit GConf;
         };
 
         vte = callPackage ./platform/vte { };
