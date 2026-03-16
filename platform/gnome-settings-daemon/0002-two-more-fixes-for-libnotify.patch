@@ -1,0 +1,68 @@
+From 1862f531b8c79bc0e646825f226412a5942693b2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Elan=20Ruusam=C3=A4e?= <glen@delfi.ee>
+Date: Tue, 26 Feb 2013 01:20:05 +0200
+Subject: [PATCH 2/5] two more fixes for libnotify
+
+** (mate-settings-daemon:27918): WARNING **: /usr/lib64/mate-settings-daemon/liba11y-keyboard.so: undefined symbol: notify_notification_attach_to_status_icon
+** (mate-settings-daemon:27225): WARNING **: /usr/lib64/mate-settings-daemon/libxrandr.so: undefined symbol: notify_notification_new_with_status_icon
+
+liba11-keyboard change done similarily to GNOME, just removing it:
+https://github.com/GNOME/gnome-settings-daemon/commit/e1ab570b0dce479ba235e5542ea07d1b5bafc4c9
+---
+ plugins/a11y-keyboard/gsd-a11y-keyboard-manager.c |  8 ++------
+ plugins/xrandr/gsd-xrandr-manager.c               | 10 ++++------
+ 2 files changed, 6 insertions(+), 12 deletions(-)
+
+diff --git a/plugins/a11y-keyboard/gsd-a11y-keyboard-manager.c b/plugins/a11y-keyboard/gsd-a11y-keyboard-manager.c
+index f355b24..2d30554 100644
+--- a/plugins/a11y-keyboard/gsd-a11y-keyboard-manager.c
++++ b/plugins/a11y-keyboard/gsd-a11y-keyboard-manager.c
+@@ -608,9 +608,7 @@ ax_slowkeys_warning_post_bubble (GsdA11yKeyboardManager *manager,
+         gsd_a11y_keyboard_manager_ensure_status_icon (manager);
+         manager->priv->notification = notify_notification_new (title,
+                                                                message,
+-                                                               "preferences-desktop-accessibility",
+-                                                               NULL);
+-        notify_notification_attach_to_status_icon (manager->priv->notification, manager->priv->status_icon);
++                                                               "preferences-desktop-accessibility");
+         notify_notification_set_timeout (manager->priv->notification, NOTIFICATION_TIMEOUT * 1000);
+ 
+         notify_notification_add_action (manager->priv->notification,
+@@ -747,9 +745,7 @@ ax_stickykeys_warning_post_bubble (GsdA11yKeyboardManager *manager,
+         gsd_a11y_keyboard_manager_ensure_status_icon (manager);
+         manager->priv->notification = notify_notification_new (title,
+                                                                message,
+-                                                               "preferences-desktop-accessibility",
+-                                                               NULL);
+-        notify_notification_attach_to_status_icon (manager->priv->notification, manager->priv->status_icon);
++                                                               "preferences-desktop-accessibility");
+         notify_notification_set_timeout (manager->priv->notification, NOTIFICATION_TIMEOUT * 1000);
+ 
+         notify_notification_add_action (manager->priv->notification,
+diff --git a/plugins/xrandr/gsd-xrandr-manager.c b/plugins/xrandr/gsd-xrandr-manager.c
+index a3e15b8..efff892 100644
+--- a/plugins/xrandr/gsd-xrandr-manager.c
++++ b/plugins/xrandr/gsd-xrandr-manager.c
+@@ -1087,15 +1087,13 @@ error_message (GsdXrandrManager *mgr, const char *primary_text, GError *error_to
+         g_assert (error_to_display == NULL || secondary_text == NULL);
+ 
+         if (priv->status_icon)
+-                notification = notify_notification_new_with_status_icon (primary_text,
+-                                                                         error_to_display ? error_to_display->message : secondary_text,
+-                                                                         GSD_XRANDR_ICON_NAME,
+-                                                                         priv->status_icon);
++                notification = notify_notification_new (primary_text,
++                                                        error_to_display ? error_to_display->message : secondary_text,
++                                                        gtk_status_icon_get_icon_name(priv->status_icon));
+         else
+                 notification = notify_notification_new (primary_text,
+                                                         error_to_display ? error_to_display->message : secondary_text,
+-                                                        GSD_XRANDR_ICON_NAME,
+-                                                        NULL);
++                                                        GSD_XRANDR_ICON_NAME);
+ 
+         notify_notification_show (notification, NULL); /* NULL-GError */
+ #else
+-- 
+2.51.2
+

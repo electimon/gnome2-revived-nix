@@ -1,0 +1,57 @@
+From 61bc30d55d57a5c5c9f0c321b8fdde1348f9d06e Mon Sep 17 00:00:00 2001
+From: Stefano Karapetsas <stefano@karapetsas.com>
+Date: Thu, 26 Sep 2013 10:56:00 +0200
+Subject: [PATCH 3/5] housekeeping: Support new thumbnails path for newer glib
+ versions
+
+Closes #51
+https://github.com/mate-desktop/mate-settings-daemon/issues/51
+---
+ plugins/housekeeping/gsd-housekeeping-manager.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/plugins/housekeeping/gsd-housekeeping-manager.c b/plugins/housekeeping/gsd-housekeeping-manager.c
+index f84cfad..2a2f008 100644
+--- a/plugins/housekeeping/gsd-housekeeping-manager.c
++++ b/plugins/housekeeping/gsd-housekeeping-manager.c
+@@ -193,22 +193,37 @@ purge_thumbnail_cache (void)
+ 
+         g_debug ("housekeeping: checking thumbnail cache size and freshness");
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++        path = g_build_filename (g_get_user_cache_dir (),
++                                 "thumbnails",
++#else
+         path = g_build_filename (g_get_home_dir (),
+                                  ".thumbnails",
++#endif
+                                  "normal",
+                                  NULL);
+         files = read_dir_for_purge (path, NULL);
+         g_free (path);
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++        path = g_build_filename (g_get_user_cache_dir (),
++                                 "thumbnails",
++#else
+         path = g_build_filename (g_get_home_dir (),
+                                  ".thumbnails",
++#endif
+                                  "large",
+                                  NULL);
+         files = read_dir_for_purge (path, files);
+         g_free (path);
+ 
++#if GLIB_CHECK_VERSION (2, 34, 0)
++        path = g_build_filename (g_get_user_cache_dir (),
++                                 "thumbnails",
++#else
+         path = g_build_filename (g_get_home_dir (),
+                                  ".thumbnails",
++#endif
+                                  "fail",
+                                  "gnome-thumbnail-factory",
+                                  NULL);
+-- 
+2.51.2
+

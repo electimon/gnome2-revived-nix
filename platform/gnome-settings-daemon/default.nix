@@ -12,6 +12,10 @@
   libxklavier,
   libgnomekbd,
   libSM,
+  pulseaudio,
+  polkit,
+  libnotify,
+  libcanberra-gtk2
 }:
 
 mkDerivation rec {
@@ -32,6 +36,9 @@ mkDerivation rec {
     libxklavier
     libgnomekbd
     libSM
+    polkit
+    libnotify
+    libcanberra-gtk2
   ];
   nativeBuildInputs = [
     dbus-glib
@@ -42,14 +49,15 @@ mkDerivation rec {
     libxklavier
     libgnomekbd
     libSM
+    pulseaudio
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-settings-daemon tends to require which
 
-  #  patches = [
-  #    (fetchurl {
-  #      name = "gnome-settings-daemon-libgnomekbd-patch";
-  #      url = "https://raw.githubusercontent.com/OpenIndiana/oi-userland/8209d32a68c949022e900cf8c72953ba15fa6eab/components/desktop/gnome/gnome-settings-daemon-2/patches/gnome-settings-daemon-17-libgnomekbd.patch";
-  #      sha256 = "sha256-iWXtMUGYEryQlXXuKvPhr82kpY43OJSNa4+QboObcYk";
-  #    })
-  #  ];
+  patches = [
+    ./0001-PATCH-region-panel-add-keys-removed-from-libgnomekbd.patch
+    ./0002-two-more-fixes-for-libnotify.patch
+    ./0003-housekeeping-Support-new-thumbnails-path-for-newer-g.patch
+    ./0004-fixing-issue-with-Control-key-at-keybinding.patch
+    ./0005-media-keys-React-to-stream-removed-signal-from-GvcMi.patch
+  ];
 }
