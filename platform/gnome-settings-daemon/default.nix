@@ -57,7 +57,7 @@ mkDerivation rec {
 #    ./0001-PATCH-region-panel-add-keys-removed-from-libgnomekbd.patch
     ./0002-two-more-fixes-for-libnotify.patch
 #    ./0003-housekeeping-Support-new-thumbnails-path-for-newer-g.patch
-#    ./0004-fixing-issue-with-Control-key-at-keybinding.patch
+    ./0004-fixing-issue-with-Control-key-at-keybinding.patch
 #    ./0005-media-keys-React-to-stream-removed-signal-from-GvcMi.patch
   ];
 }
