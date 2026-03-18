@@ -17,7 +17,7 @@
   x264,
   twolame,
   libdvdread,
-  a52dec
+  a52dec,
 }:
 
 stdenv.mkDerivation rec {

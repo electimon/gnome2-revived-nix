@@ -332,11 +332,11 @@
                 substituteInPlace gui/interface.c \
                   --replace 'MPLAYER_DATADIR "/skins"' '"/run/current-system/sw/share/mplayer/skins"'
               '';
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
 
               postInstall = (old.postInstall or "") + ''
-                wrapProgram $out/bin/mplayer \
-               --prefix LD_LIBRARY_PATH : ${pkgs.libaacs}/lib
+                 wrapProgram $out/bin/mplayer \
+                --prefix LD_LIBRARY_PATH : ${pkgs.libaacs}/lib
               '';
             });
         mplayer-skins = callPackage ./desktop/mplayer-skins { };
@@ -479,7 +479,7 @@
               security.polkit.enable = true;
               # meow gvfs for smb shares
               services.gvfs.enable = true;
-              networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
+              networking.firewall.extraCommands = "iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns";
 
               # Feed on you, survive off you....
               systemd.packages = [ self.packages.${system}.ConsoleKit2 ];
