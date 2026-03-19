@@ -97,7 +97,7 @@
         # Consider moving outside of this flake..
         ConsoleKit2 = callPackage ./platform/ConsoleKit2 { };
 
-        file-roller = callPackage ./platform/file-roller { inherit GConf; inherit gnome-doc-utils; };
+        file-roller = callPackage ./platform/file-roller { inherit GConf; inherit gnome-doc-utils; inherit nautilus; };
 
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
 
