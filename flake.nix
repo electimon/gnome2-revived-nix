@@ -97,6 +97,8 @@
         # Consider moving outside of this flake..
         ConsoleKit2 = callPackage ./platform/ConsoleKit2 { };
 
+        file-roller = callPackage ./platform/file-roller { inherit GConf; inherit gnome-doc-utils; };
+
         GConf = callPackage ./platform/GConf { inherit ORBit2; };
 
         gconf-defaults =
@@ -348,6 +350,7 @@
             GConf
             ORBit2
             pkgs.ffmpegthumbnailer
+            file-roller
             gedit
             gnome-applets
             gnome-common

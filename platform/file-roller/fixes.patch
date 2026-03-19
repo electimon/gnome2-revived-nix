@@ -1,0 +1,55 @@
+--- file-roller-2.32.2/copy-n-paste/eggsmclient-xsmp.c	2011-04-26 14:29:35.000000000 +0000
++++ file-roller-2.32.2-new/copy-n-paste/eggsmclient-xsmp.c	2026-03-19 00:09:12.082200354 +0000
+@@ -35,7 +35,7 @@
+ #include <unistd.h>
+ #include <X11/SM/SMlib.h>
+ 
+-#include <gdk/gdk.h>
++#include <gdk/gdkx.h>
+ 
+ #define EGG_TYPE_SM_CLIENT_XSMP            (egg_sm_client_xsmp_get_type ())
+ #define EGG_SM_CLIENT_XSMP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), EGG_TYPE_SM_CLIENT_XSMP, EggSMClientXSMP))
+@@ -367,7 +367,7 @@
+       free (ret_client_id);
+ 
+       gdk_threads_enter ();
+-      gdk_set_sm_client_id (xsmp->client_id);
++      gdk_x11_set_sm_client_id (xsmp->client_id);
+       gdk_threads_leave ();
+ 
+       g_debug ("Got client ID \"%s\"", xsmp->client_id);
+--- file-roller-2.32.2/src/glib-utils.h	2011-04-26 14:29:35.000000000 +0000
++++ file-roller-2.32.2-new/src/glib-utils.h	2026-03-19 00:09:46.795050051 +0000
+@@ -59,7 +59,6 @@
+ 						  int          last_field);
+ int                 n_fields                     (char       **str_array);
+ char *              get_time_string              (time_t       time);
+-GPtrArray *         g_ptr_array_copy             (GPtrArray   *array);
+ void                g_ptr_array_free_full        (GPtrArray   *array,
+                        				  GFunc        func,
+                        				  gpointer     user_data);
+--- file-roller-2.32.2/src/glib-utils.c	2011-04-26 14:29:35.000000000 +0000
++++ file-roller-2.32.2-new/src/glib-utils.c	2026-03-19 00:10:02.878368770 +0000
+@@ -542,22 +542,6 @@
+ }
+ 
+ 
+-GPtrArray *
+-g_ptr_array_copy (GPtrArray *array)
+-{
+-	GPtrArray *new_array;
+-	
+-	if (array == NULL)
+-		return NULL;
+-		
+-	new_array = g_ptr_array_sized_new (array->len);
+-	memcpy (new_array->pdata, array->pdata, array->len * sizeof (gpointer)); 
+-	new_array->len = array->len;
+-	
+-	return new_array;
+-}
+-
+-
+ void
+ g_ptr_array_free_full (GPtrArray *array,
+                        GFunc      free_func,
