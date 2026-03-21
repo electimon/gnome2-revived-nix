@@ -196,6 +196,8 @@
           inherit gnome-desktop;
         };
 
+        gnome-system-monitor = callPackage ./platform/gnome-system-monitor { inherit GConf; inherit gnome-doc-utils; };
+
         gnome-terminal = callPackage ./platform/gnome-terminal {
           inherit vte;
           inherit GConf;
@@ -364,6 +366,7 @@
             gnome-panel
             gnome-session
             gnome-settings-daemon
+            gnome-system-monitor
             gnome-themes
             gnome-terminal
             gnome-utils
