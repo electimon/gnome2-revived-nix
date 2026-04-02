@@ -315,6 +315,8 @@
 
         vte = callPackage ./platform/vte { };
 
+        xmms-gtk2 = callPackage ./desktop/xmms-gtk2 { };
+
         zenity = callPackage ./platform/zenity {
           inherit gnome-doc-utils;
         };
@@ -415,6 +417,7 @@
           paths = [
             mplayer
             mplayer-skins
+            xmms-gtk2
           ];
         };
       };
