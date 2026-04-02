@@ -26,4 +26,5 @@ mkDerivation rec {
   nativeBuildInputs = [ autoconf libtool automake ];
   buildInputs = [ gtk2 alsa-lib libmikmod libogg ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using xmms-gtk2 tends to require which
+  NIX_LDFLAGS = "-lmvec";
 }
