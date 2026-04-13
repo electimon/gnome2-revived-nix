@@ -317,6 +317,10 @@
 
         xmms-gtk2 = callPackage ./desktop/xmms-gtk2 { };
 
+        xmms-pulse = callPackage ./desktop/xmms-pulse { inherit xmms-gtk2; };
+
+        yzunight-theme = callPackage ./desktop/yzunight-theme { inherit gtk2-engines; };
+
         zenity = callPackage ./platform/zenity {
           inherit gnome-doc-utils;
         };
@@ -412,6 +416,13 @@
           ];
         };
 
+        extra-themes = pkgs.buildEnv rec {
+          name = "extra-themes";
+          paths = [
+            yzunight-theme
+          ];
+        };
+
         extra-apps = pkgs.buildEnv rec {
           name = "extra-apps";
           paths = [
@@ -453,6 +464,7 @@
               environment.systemPackages = [
                 self.packages.${system}.default
                 self.packages.${system}.extra-utils
+                self.packages.${system}.extra-themes
                 self.packages.${system}.extra-apps
               ];
 
