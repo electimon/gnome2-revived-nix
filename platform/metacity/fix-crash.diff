@@ -1,0 +1,17 @@
+diff --git a/metacity-2.30.5/src/core/screen.c b/metacity-2.36.2/src/core/screen.c
+index 835f585..e545463 100644
+--- metacity-2.30.5/src/core/screen.c
++++ metacity-2.36.2/src/core/screen.c
+@@ -1399,8 +1399,10 @@ get_window_pixbuf_xrender (MetaWindow *window,
+   if (format == NULL)
+     return NULL;
+ 
++  meta_error_trap_push_with_return (display);
+   dst_pixmap = XCreatePixmap (xdisplay, src_pixmap, dst_width, dst_height, depth);
+-  if (dst_pixmap == None)
++  if (meta_error_trap_pop_with_return (display, FALSE) != Success ||
++      dst_pixmap == None)
+     return NULL;
+ 
+   src_picture = None;
+
