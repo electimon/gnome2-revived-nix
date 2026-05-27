@@ -34,6 +34,12 @@ in
           # Set TMPDIR for gconf-sanity-check-2
           export TMPDIR=/tmp
 
+          export XDG_CURRENT_DESKTOP=gnome2
+          export XDG_SESSION_DESKTOP=gnome2
+          export DESKTOP_SESSION=gnome2
+          dbus-update-activation-environment --systemd \
+            XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DESKTOP_SESSION
+
           exec ${
             self.packages.${system}.ConsoleKit2
           }/bin/ck-launch-session ${self.packages.x86_64-linux.gnome-session}/bin/gnome-session
