@@ -8,16 +8,17 @@
   gtk2,
   libgcrypt,
   libtasn1,
-  GConf
+  GConf,
+  pam
 }:
 
 mkDerivation rec {
   pname = "gnome-keyring";
-  version = "2.28.2";
+  version = "2.30.3";
 
   src = fetchurl {
-    url = "https://download.gnome.org/sources/gnome-keyring/2.28/gnome-keyring-2.28.2.tar.bz2";
-    sha256 = "sha256-0taG+yUo7gRbvNnxjQ1FLg64jCJloZR/Y5FSthpZh/Y=";
+    url = "https://download.gnome.org/sources/gnome-keyring/2.30/gnome-keyring-2.30.3.tar.bz2";
+    sha256 = "sha256-sk5cbbYhiX8qAEXwCD4fh41hf1yAHTicLOAoosZ+KQs=";
   };
 
   buildInputs = [
@@ -26,9 +27,10 @@ mkDerivation rec {
     libgcrypt
     libtasn1
     GConf
+    pam
   ];
-  patches = [
-#s    ./gnome-keyring-fix-asn1-prototypes.patch
-#    ./0001-1440-compile-fix.patch
+  configureFlags = [ "--enable-acl-prompts" "--enable-ssh-agent" ];
+  NIX_CFLAGS_COMPILE = [
+    "-Wno-incompatible-pointer-types"
   ];
 }
