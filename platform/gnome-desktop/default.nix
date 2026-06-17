@@ -11,6 +11,10 @@
   python2,
   gnome-doc-utils,
   libxml2,
+  pygtk,
+  pycairo,
+  pygobject,
+  makeWrapper
 }:
 
 mkDerivation rec {
@@ -28,6 +32,7 @@ mkDerivation rec {
     glib
     GConf
     libxml2
+    pygtk # for gnome-about
   ];
   propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-desktop tends to require which
   nativeBuildInputs = [
@@ -38,10 +43,19 @@ mkDerivation rec {
     python2
     gnome-doc-utils
     libxml2
+    makeWrapper
   ];
 
   patches = [
     ./0001-1440-compile-fix.patch
     ./0001-fix-thumbnails-with-glib-2.34.patch
   ];
+
+  postFixup = ''
+    wrapProgram $out/bin/gnome-about \
+      --prefix PYTHONPATH : "${pygtk}/lib/python2.7/site-packages" \
+      --prefix PYTHONPATH : "${pygtk}/lib/python2.7/site-packages/gtk-2.0" \
+      --prefix PYTHONPATH : "${pygobject}/lib/python2.7/site-packages" \
+      --prefix PYTHONPATH : "${pycairo}/lib/python2.7/site-packages"
+  '';
 }

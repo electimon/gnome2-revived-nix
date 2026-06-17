@@ -166,6 +166,9 @@
         gnome-desktop = callPackage ./platform/gnome-desktop {
           inherit GConf;
           inherit gnome-doc-utils;
+          inherit pygtk;
+          inherit pycairo;
+          inherit pygobject;
         };
 
         gnome-doc-utils = callPackage ./platform/gnome-doc-utils {
@@ -358,6 +361,10 @@
             });
         mplayer-skins = callPackage ./desktop/mplayer-skins { };
 
+        pycairo = callPackage ./platform/pycairo { };
+        pygobject = callPackage ./platform/pygobject { };
+        pygtk = callPackage ./platform/pygtk { inherit pycairo; inherit pygobject; inherit libglade; };
+
         gnome-base = pkgs.buildEnv {
           name = "gnome2-base";
           paths = [
@@ -406,6 +413,7 @@
             xdg-user-dirs
             zenity
             eog
+            pygtk
           ];
         };
 
