@@ -173,7 +173,7 @@
           inherit scrollkeeper;
         };
 
-        gnome-keyring = callPackage ./platform/gnome-keyring { };
+        gnome-keyring = callPackage ./platform/gnome-keyring { inherit GConf; };
 
         gnome-media = callPackage platform/gnome-media {
           inherit GConf;

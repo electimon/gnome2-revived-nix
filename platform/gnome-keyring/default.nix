@@ -8,15 +8,16 @@
   gtk2,
   libgcrypt,
   libtasn1,
+  GConf
 }:
 
 mkDerivation rec {
   pname = "gnome-keyring";
-  version = "2.32.1";
+  version = "2.28.2";
 
   src = fetchurl {
-    url = "https://download.gnome.org/sources/gnome-keyring/2.32/gnome-keyring-2.32.1.tar.gz";
-    sha256 = "sha256-UeVamK+X6CIq6R/F+AhLrNqPnuSz5M/4IvlOtfJBIBg=";
+    url = "https://download.gnome.org/sources/gnome-keyring/2.28/gnome-keyring-2.28.2.tar.bz2";
+    sha256 = "sha256-0taG+yUo7gRbvNnxjQ1FLg64jCJloZR/Y5FSthpZh/Y=";
   };
 
   buildInputs = [
@@ -24,15 +25,10 @@ mkDerivation rec {
     gtk2
     libgcrypt
     libtasn1
+    GConf
   ];
-  nativeBuildInputs = [
-    gtk2
-    libgcrypt
-    libtasn1
-  ];
-  propagatedBuildInputs = [ which ]; # autogen.sh which is using gnome-common tends to require which
   patches = [
-    ./gnome-keyring-fix-asn1-prototypes.patch
-    ./0001-1440-compile-fix.patch
+#s    ./gnome-keyring-fix-asn1-prototypes.patch
+#    ./0001-1440-compile-fix.patch
   ];
 }
