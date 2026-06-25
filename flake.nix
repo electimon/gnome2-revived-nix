@@ -134,7 +134,17 @@
                     --config-source=xml:merged:$out/etc/gconf/gconf.xml.defaults --direct --load "$s"
                 fi
               done
+              # TODO if gdm enabled we should do the gconf entries for it instead of including gdm in gnome-base
+              # i think it should be ok to decouple gdm from gnome-base and this is the only link between them i THINK
             '';
+
+        gdm2 = callPackage ./platform/gdm2 {
+          inherit GConf;
+          inherit gnome-doc-utils;
+          inherit gnome-panel;
+          inherit gnome-session;
+          inherit ConsoleKit2;
+        };
 
         gedit = callPackage ./platform/gedit {
           inherit GConf;
@@ -261,6 +271,8 @@
 
         gtk2-engines = callPackage ./platform/gtk2-engines { };
 
+        hicolor-icon-theme = callPackage ./platform/hicolor-icon-theme { };
+
         libbonoboui = callPackage ./platform/libbonoboui {
           inherit GConf;
           inherit libgnome;
@@ -373,6 +385,7 @@
             ORBit2
             pkgs.ffmpegthumbnailer
             file-roller
+            gdm2
             gedit
             gnome-applets
             gnome-common
@@ -399,7 +412,7 @@
             gtk2.out
             gtk2-engines
             gtkglext
-            pkgs.hicolor-icon-theme
+            hicolor-icon-theme
             libIDL
             libart_lgpl
             libglade
@@ -459,6 +472,8 @@
         modules = [
           # This is where gnome-session config lives
           ./modules/session.nix
+          # This is where gdm config lives :D
+          ./modules/gdm.nix
           # Since we are using this flake as the sys config
           # and by we I mean me :sob: need 2 include the
           # actual sys config
@@ -476,6 +491,8 @@
               # This is from modules/session.nix
               # it enables gnome2 selection in your display manager
               services.xserver.desktopManager.gnome2.enable = true;
+
+              services.xserver.displayManager.gdm2.enable = false;
 
               environment.systemPackages = [
                 self.packages.${system}.default

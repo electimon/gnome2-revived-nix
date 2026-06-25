@@ -1,0 +1,10 @@
+--- gdm-2.30.7/daemon/gdm-session-direct.c	2011-06-02 10:56:19.000000000 -0400
++++ gdm-2.30.7-new/daemon/gdm-session-direct.c	2026-06-17 03:03:21.620471882 -0400
+@@ -468,6 +468,7 @@
+ {
+         static const char *search_dirs[] = {
+                 "/etc/X11/sessions/",
++                "/run/current-system/sw/share/xsessions",
+                 DMCONFDIR "/Sessions/",
+                 DATADIR "/xsessions/",
+                 DATADIR "/gdm/BuiltInSessions/",
